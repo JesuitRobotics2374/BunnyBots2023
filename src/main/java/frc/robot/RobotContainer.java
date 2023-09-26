@@ -22,12 +22,10 @@ public class RobotContainer {
      * The robot container. Need I say more?
      */
     public RobotContainer() {
-        System.out.println("container created");
-
         // resetDrive();
-
         configureButtonBindings();
         configureShuffleBoard();
+        System.out.println("container created");
     }
 
     /**
