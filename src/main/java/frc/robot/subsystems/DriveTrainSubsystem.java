@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -22,7 +23,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
             instance = this;
         }
         leftGroup = new MotorControllerGroup(backLeft, frontLeft);
+        leftGroup.setInverted(true);
         rightGroup = new MotorControllerGroup(backRight, frontRight);
+        frontLeft.setNeutralMode(NeutralMode.Brake);
+        frontRight.setNeutralMode(NeutralMode.Brake);
+        backRight.setNeutralMode(NeutralMode.Brake);
+        backLeft.setNeutralMode(NeutralMode.Brake);
         diffDrive = new DifferentialDrive(leftGroup, rightGroup);
     }
 
