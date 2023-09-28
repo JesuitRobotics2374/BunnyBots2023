@@ -15,8 +15,8 @@ public class RobotContainer {
     // private final XboxController m_operatorController = new
     // XboxController(Constants.CONTROLLER_USB_PORT_OPERATOR);
 
-    private SlewRateLimiter leftLimiter = new SlewRateLimiter(5);
-    private SlewRateLimiter rightLimiter = new SlewRateLimiter(5);
+    private SlewRateLimiter leftLimiter = new SlewRateLimiter(2.5);
+    private SlewRateLimiter rightLimiter = new SlewRateLimiter(2.5);
 
     /**
      * The robot container. Need I say more?
@@ -98,7 +98,8 @@ public class RobotContainer {
      * @return The adjusted Left Y axis of the main controller
      */
     public double getLeftY() {
-        return square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
+        return Constants.SPEED_MULTIPLIER
+                * square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
     }
 
     /**
@@ -108,7 +109,8 @@ public class RobotContainer {
      */
 
     public double getRightY() {
-        return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
+        return Constants.SPEED_MULTIPLIER
+                * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
     }
 
     /**

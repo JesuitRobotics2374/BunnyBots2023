@@ -24,5 +24,5 @@ public class Constants {
 
     // Robotcontainer things
     public static final double DEADBAND = 0.1;
-    public static final double SPEED_MULTIPLIER = 0.2;
+    public static final double SPEED_MULTIPLIER = 0.5;
 }

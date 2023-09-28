@@ -2,7 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +19,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private final DifferentialDrive diffDrive;
     private final MotorControllerGroup leftGroup;
     private final MotorControllerGroup rightGroup;
+    private final AHRS navX = new AHRS();
+    private PIDController turnController = new PIDController(1 / 180, 1 / 200, -1 / 200);
     private static DriveTrainSubsystem instance;
 
     public DriveTrainSubsystem() {
@@ -30,6 +35,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
         backRight.setNeutralMode(NeutralMode.Brake);
         backLeft.setNeutralMode(NeutralMode.Brake);
         diffDrive = new DifferentialDrive(leftGroup, rightGroup);
+        turnController.enableContinuousInput(-180, 180);
+        turnController.setTolerance(5, 5);
     }
 
     public void drive(double left, double right) {
@@ -41,6 +48,25 @@ public class DriveTrainSubsystem extends SubsystemBase {
             instance = new DriveTrainSubsystem();
         }
         return instance;
+    }
+
+    public double getCurrentAngle() {
+        return navX.getAngle();
+    }
+
+    public void updateTurnTarget(double turnAmmount) {
+        turnController.setSetpoint((getCurrentAngle() + turnAmmount + 180) % 360 - 180);
+    }
+
+    public void Turn() {
+        if (!atSetPoint()) {
+            double amount = turnController.calculate((getCurrentAngle() + 180) % 360 - 180);
+            drive(amount, -amount);
+        }
+    }
+
+    public boolean atSetPoint() {
+        return turnController.atSetpoint();
     }
 
 }
