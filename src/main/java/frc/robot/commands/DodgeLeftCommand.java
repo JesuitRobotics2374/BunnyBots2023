@@ -19,7 +19,6 @@ public class DodgeLeftCommand extends CommandBase {
     @Override
     public void execute() {
         m_DriveTrainSubsystem.Turn();
-
     }
 
     @Override

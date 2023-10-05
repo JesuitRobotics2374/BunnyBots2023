@@ -5,9 +5,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -37,6 +38,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
         diffDrive = new DifferentialDrive(leftGroup, rightGroup);
         turnController.enableContinuousInput(-180, 180);
         turnController.setTolerance(5, 5);
+        ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
+        tab.addNumber("Angle", this::getCurrentAngle);
     }
 
     public void drive(double left, double right) {

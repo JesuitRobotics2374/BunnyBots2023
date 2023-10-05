@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 public class Constants {
     public static final String CAN_BUS_NAME_CANIVORE = "FastFD";
     public static final String CAN_BUS_NAME_ROBORIO = "rio";
@@ -25,4 +27,6 @@ public class Constants {
     // Robotcontainer things
     public static final double DEADBAND = 0.1;
     public static final double SPEED_MULTIPLIER = 0.5;
+    public static final int PIGEON_ID = 0;
+    public static final String DRIVER_READOUT_TAB_NAME = "Driver Readout";
 }
