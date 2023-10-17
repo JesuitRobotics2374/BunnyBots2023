@@ -23,6 +23,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private final AHRS navX = new AHRS();
     private PIDController turnController = new PIDController(1 / 180, 1 / 200, -1 / 200);
     private static DriveTrainSubsystem instance;
+    private double target = 0;
 
     public DriveTrainSubsystem() {
         if (instance == null) {
@@ -59,17 +60,24 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     public void updateTurnTarget(double turnAmmount) {
         turnController.setSetpoint((getCurrentAngle() + turnAmmount + 180) % 360 - 180);
+        target = (getCurrentAngle() + turnAmmount + 180) % 360 - 180;
     }
 
     public void Turn() {
-        if (!atSetPoint()) {
-            double amount = turnController.calculate((getCurrentAngle() + 180) % 360 - 180);
-            drive(amount, -amount);
+        // if (!atSetPoint()) {
+        //     double amount = turnController.calculate((getCurrentAngle() + 180) % 360 - 180);
+        //     drive(amount, -amount);
+        // }
+        if (target < getCurrentAngle()) {
+            drive(.3, -.3);
+        } else {
+            drive(-.3, .3);
         }
     }
 
     public boolean atSetPoint() {
-        return turnController.atSetpoint();
+        // return turnController.atSetpoint();
+        return Math.abs((getCurrentAngle() + 180) % 360 - 180 - target) < 10;
     }
 
 }
