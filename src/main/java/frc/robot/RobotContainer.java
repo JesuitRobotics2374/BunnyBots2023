@@ -2,7 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DodgeLeftCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class RobotContainer {
@@ -65,6 +67,7 @@ public class RobotContainer {
      * Setup all of the button controls for the robot
      */
     public void configureButtonBindings() {
+        new Trigger(m_driveController::getAButtonPressed).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
     }
 
     /**
