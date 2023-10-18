@@ -20,6 +20,9 @@ public class RobotContainer {
     private SlewRateLimiter leftLimiter = new SlewRateLimiter(2.5);
     private SlewRateLimiter rightLimiter = new SlewRateLimiter(2.5);
 
+    private boolean slow = false;
+    private boolean turbo = false;
+
     /**
      * The robot container. Need I say more?
      */
@@ -101,8 +104,15 @@ public class RobotContainer {
      * @return The adjusted Left Y axis of the main controller
      */
     public double getLeftY() {
-        return Constants.SPEED_MULTIPLIER
+        if (slow) {
+            return Constants.SPEED_MULTIPLIER
+                * square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND))) * .2;
+        } else if (turbo) {
+            return square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
+        } else {
+            return Constants.SPEED_MULTIPLIER
                 * square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
+        }
     }
 
     /**
@@ -112,8 +122,15 @@ public class RobotContainer {
      */
 
     public double getRightY() {
-        return Constants.SPEED_MULTIPLIER
+        if (slow) {
+            return Constants.SPEED_MULTIPLIER
+                * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND))) * .2;
+        } else if (turbo) {
+            return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
+        } else {
+            return Constants.SPEED_MULTIPLIER
                 * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
+        }
     }
 
     /**
