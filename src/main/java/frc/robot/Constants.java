@@ -26,7 +26,7 @@ public class Constants {
 
     // Robotcontainer things
     public static final double DEADBAND = 0.1;
-    public static final double SPEED_MULTIPLIER = 1;
+    public static final double SPEED_MULTIPLIER = .8;
     public static final int PIGEON_ID = 0;
     public static final String DRIVER_READOUT_TAB_NAME = "Driver Readout";
 }

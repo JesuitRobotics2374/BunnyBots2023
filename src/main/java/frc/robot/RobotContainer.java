@@ -2,6 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DodgeLeftCommand;
@@ -63,7 +66,9 @@ public class RobotContainer {
      * Set up the Shuffleboard
      */
     public void configureShuffleBoard() {
-        // ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
+        ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
+        tab.addBoolean("Skrt skrt", this::getSlowMode);
+        tab.addBoolean("Vroom vroom", this::getTurboMode);
     }
 
     /**
@@ -71,6 +76,8 @@ public class RobotContainer {
      */
     public void configureButtonBindings() {
         new Trigger(m_driveController::getAButtonPressed).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
+        new Trigger(m_driveController::getLeftBumperPressed).onTrue(new InstantCommand(this::toggleSlowMode));
+        new Trigger(m_driveController::getRightBumperPressed).onTrue(new InstantCommand(this::toggleTurboMode));
     }
 
     /**
@@ -99,14 +106,23 @@ public class RobotContainer {
     }
 
     /**
+     * Toggle the slow mode
+     */
+    public void toggleSlowMode() {
+        slow = !slow;
+    }
+    public void toggleTurboMode() {
+        turbo = !turbo;
+    }
+
+    /**
      * Get the adjusted Left Y axis of the main controller
      * 
      * @return The adjusted Left Y axis of the main controller
      */
     public double getLeftY() {
         if (slow) {
-            return Constants.SPEED_MULTIPLIER
-                * square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND))) * .2;
+            return square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND))) * .5;
         } else if (turbo) {
             return square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
         } else {
@@ -123,8 +139,7 @@ public class RobotContainer {
 
     public double getRightY() {
         if (slow) {
-            return Constants.SPEED_MULTIPLIER
-                * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND))) * .2;
+            return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND))) * .5;
         } else if (turbo) {
             return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
         } else {
@@ -149,5 +164,23 @@ public class RobotContainer {
      */
     public DriveTrainSubsystem getDrivetrain() {
         return m_DriveTrainSubsystem;
+    }
+
+    /**
+     * Get the slow boolean
+     * 
+     * @return slow
+     */
+    public boolean getSlowMode() {
+        return slow;
+    }
+
+    /**
+     * Get the turbo boolean
+     * 
+     * @return turbo
+     */
+    public boolean getTurboMode() {
+        return turbo;
     }
 }
