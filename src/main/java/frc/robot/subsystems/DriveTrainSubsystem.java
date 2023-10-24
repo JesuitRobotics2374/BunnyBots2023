@@ -58,21 +58,45 @@ public class DriveTrainSubsystem extends SubsystemBase {
         return navX.getAngle();
     }
 
-    public void updateTurnTarget(double turnAmmount) {
+    /**public void updateTurnTarget(double turnAmmount) {
         turnController.setSetpoint((getCurrentAngle() + turnAmmount + 180) % 360 - 180);
         target = (getCurrentAngle() + turnAmmount + 180) % 360 - 180;
     }
+    **/
+    public void updateTurnTarget(double turnAmmount) {
+        double currentAngle = getCurrentAngle();
+        if(currentAngle < 0){
+            currentAngle+=360;
+        }
+        double targetAngle = currentAngle + turnAmmount;
+        System.out.println(currentAngle);
+        System.out.println(targetAngle);
+        if(targetAngle >=360){
+            targetAngle = targetAngle -360;
+        }
+        target = targetAngle;
+        Turn();
+
+
+        //turnController.setSetpoint(targetAngle);
+        
+
+    }
+    
 
     public void Turn() {
         // if (!atSetPoint()) {
         //     double amount = turnController.calculate((getCurrentAngle() + 180) % 360 - 180);
         //     drive(amount, -amount);
         // }
+
         if (target < getCurrentAngle()) {
-            drive(.3, -.3);
+           drive(.3, -.3)
         } else {
-            drive(-.3, .3);
+           drive(-.3, .3);
         }
+if target - getCurrentAngle()<.3{target = getCurrentAngle()}
+
     }
 
     public boolean atSetPoint() {
