@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+
 
 public class DriveTrainSubsystem extends SubsystemBase {
     private final WPI_TalonSRX frontLeft = new WPI_TalonSRX(Constants.FRONT_LEFT_DRIVE_ID);
@@ -24,7 +27,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private PIDController turnController = new PIDController(1 / 180, 1 / 200, -1 / 200);
     private static DriveTrainSubsystem instance;
     private double target = 0;
-
+    private double getCurrentAngle;
+   
     public DriveTrainSubsystem() {
         if (instance == null) {
             instance = this;
@@ -66,7 +70,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     public void updateTurnTarget(double turnAmmount) {
         double currentAngle = getCurrentAngle();
         if(currentAngle < 0){
-            currentAngle+=360;
+            System.out.println(currentAngle);
         }
         double targetAngle = currentAngle + turnAmmount;
         System.out.println(currentAngle);
@@ -85,23 +89,24 @@ public class DriveTrainSubsystem extends SubsystemBase {
     
 
     public void Turn() {
-        // if (!atSetPoint()) {
-        //     double amount = turnController.calculate((getCurrentAngle() + 180) % 360 - 180);
-        //     drive(amount, -amount);
-        // }
+        double CA = getCurrentAngle(); 
 
-        if (target < getCurrentAngle()) {
-           drive(.3, -.3)
+        if (target < CA) {
+           drive(.3, -.3);
         } else {
            drive(-.3, .3);
         }
-if target - getCurrentAngle()<.3{target = getCurrentAngle()}
 
+        double delta = target - CA;
+        delta = Math.abs(delta);  
+        System.out.println(delta);
+        if ( delta < 0.3)  {
+            target = CA;
+        }
     }
 
     public boolean atSetPoint() {
         // return turnController.atSetpoint();
         return Math.abs((getCurrentAngle() + 180) % 360 - 180 - target) < 10;
     }
-
 }
