@@ -75,9 +75,10 @@ public class RobotContainer {
      * Setup all of the button controls for the robot
      */
     public void configureButtonBindings() {
-        new Trigger(m_driveController::getAButtonPressed).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
-        new Trigger(m_driveController::getLeftBumperPressed).onTrue(new InstantCommand(this::toggleSlowMode));
-        new Trigger(m_driveController::getRightBumperPressed).onTrue(new InstantCommand(this::toggleTurboMode));
+        new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
+        new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
+        new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
+        new Trigger(m_driveController::getBButton).onTrue(new InstantCommand(m_DriveTrainSubsystem::printSensor));
     }
 
     /**
@@ -111,6 +112,7 @@ public class RobotContainer {
     public void toggleSlowMode() {
         slow = !slow;
     }
+
     public void toggleTurboMode() {
         turbo = !turbo;
     }
@@ -127,7 +129,7 @@ public class RobotContainer {
             return square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
         } else {
             return Constants.SPEED_MULTIPLIER
-                * square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
+                    * square(leftLimiter.calculate(deadband(m_driveController.getLeftY(), Constants.DEADBAND)));
         }
     }
 
@@ -144,7 +146,7 @@ public class RobotContainer {
             return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
         } else {
             return Constants.SPEED_MULTIPLIER
-                * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
+                    * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
         }
     }
 
