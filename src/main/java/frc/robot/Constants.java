@@ -24,6 +24,10 @@ public class Constants {
     public static final int BACK_LEFT_DRIVE_ID = 1;
     public static final int BACK_RIGHT_DRIVE_ID = 2;
 
+    // Shooter Motor IDs
+    public static final int LEFT_SHOOTER_MOTOR = 28;
+    public static final int RIGHT_SHOOTER_MOTOR = 29;
+
     // Robotcontainer things
     public static final double DEADBAND = 0.1;
     public static final double SPEED_MULTIPLIER = .8;
