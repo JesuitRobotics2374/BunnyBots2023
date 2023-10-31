@@ -168,6 +168,24 @@ public class RobotContainer {
         return m_DriveTrainSubsystem;
     }
 
+    public void Drive(boolean right, double revNum){
+
+        int p = revNum / 4096;
+    
+        for(int i = 0; i <= revNum; i++){
+            while(p != revNum) {
+            final double c = 17.5;
+             revNum = revNum/4096;
+             revNum *= c;
+             p = revNum;
+            
+            }
+        }
+        }
+
+
+    }
+
     /**
      * Get the slow boolean
      * 
@@ -186,3 +204,5 @@ public class RobotContainer {
         return turbo;
     }
 }
+
+
