@@ -15,7 +15,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem() {
         shooterRightMotor.setInverted(true);
-        shooterlLeftMotor.getSelectedSensorVelocity();
+        shooterLeftMotor.getSelectedSensorVelocity();
         shooterLeftMotor.config_kP(0, Constants.SHOOTER_KP);
         shooterLeftMotor.config_kI(0, Constants.SHOOTER_KI);
         shooterLeftMotor.config_kD(0, Constants.SHOOTER_KD);        
@@ -28,8 +28,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         }
 
-    public void calculateInitialVelocity(double distance) {
-        // use OBJECT_BUCKET_HEIGHT, LIMELIGHT_HEIGHT, SHOOTER_ANGLE_DEGREES, LIMELIGHT_ANGLE
+    public double calculateInitialVelocity(double distance,double correction) {
+        return ((distance*correction)/Math.cos(Constants.SHOOTER_RELEASE_ANGLE))*Math.sqrt((9.80665/2)*())+Constants.DRAG_COEFFICIENT;
     }
 
 
