@@ -25,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+//todo
         }
 
     public double calculateInitialVelocity(double distance,double correction) {
