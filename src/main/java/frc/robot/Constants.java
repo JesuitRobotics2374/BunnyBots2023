@@ -24,13 +24,31 @@ public class Constants {
     public static final int BACK_LEFT_DRIVE_ID = 1;
     public static final int BACK_RIGHT_DRIVE_ID = 2;
 
-    // Shooter Motor IDs
-    public static final int LEFT_SHOOTER_MOTOR = 28;
-    public static final int RIGHT_SHOOTER_MOTOR = 29;
-
     // Robotcontainer things
     public static final double DEADBAND = 0.1;
     public static final double SPEED_MULTIPLIER = .8;
     public static final int PIGEON_ID = 0;
     public static final String DRIVER_READOUT_TAB_NAME = "Driver Readout";
+
+    // Shooter Subclass
+    public static final int SHOOTER_LEFT_MOTOR_CAN_ID = 7;
+    public static final int SHOOTER_RIGHT_MOTOR_CAN_ID = 8;
+
+    public static final double SHOOTER_GROUND_HEIGHT = 0; // TBD
+    public static final double SHOOTER_RELEASE_ANGLE = 0; // TBD
+    public static final double TARGET_CENTERPOINT_HEIGHT = 0; // TBD
+    public static final int DRAG_COEFFICIENT = 1; // TBD
+
+    public static final double DELTA_HEIGHT = Math.abs(SHOOTER_GROUND_HEIGHT - TARGET_CENTERPOINT_HEIGHT);
+
+    public static final double SHOOTER_KP = 1 / 12288000;
+    public static final double SHOOTER_KI = 1 / 24576000;
+    public static final double SHOOTER_KD = -1 / 49152000;
+
+    public static final double MOTOR_VELOCITY_CONVERSION = 2 * 513.3063;
+
+    // Limelight
+
+    public static final double LIMELIGHT_GROUND_HEIGHT = 0; // TBD
+    public static final double LIMELIGHT_PITCH = 0;
 }
