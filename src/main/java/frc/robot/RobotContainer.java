@@ -78,7 +78,8 @@ public class RobotContainer {
         new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
         new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
-        new Trigger(m_driveController::getBButton).onTrue(new InstantCommand(m_DriveTrainSubsystem::printSensor));
+        //new Trigger(m_driveController::getBButton).onTrue(new InstantCommand(m_DriveTrainSubsystem::printSensor));
+        new Trigger(m_driveController::getBButton).onTrue(new driveForwardCommand(m_DriveTrainSubsystem::printSensor));
     }
 
     /**
@@ -168,23 +169,9 @@ public class RobotContainer {
         return m_DriveTrainSubsystem;
     }
 
-    public void Drive(boolean right, double revNum){
-
-        int p = revNum / 4096;
     
-        for(int i = 0; i <= revNum; i++){
-            while(p != revNum) {
-            final double c = 17.5;
-             revNum = revNum/4096;
-             revNum *= c;
-             p = revNum;
-            
-            }
-        }
-        }
 
 
-    }
 
     /**
      * Get the slow boolean
