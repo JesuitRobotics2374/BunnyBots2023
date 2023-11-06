@@ -55,21 +55,29 @@ public class DriveTrainSubsystem extends SubsystemBase {
     public void driv_distance(int revNum){
         int p = revNum / 4096;
         
-        int leftCurrent= frontLeft.getSelectedSensorPosition();
-        int rightCurrent = frontRight.getSelectedSensorPosition();
-        int leftTarget = leftCurrent += p;
-        int rightTarget= rightCurrent += p;
+        double leftCurrent= frontLeft.getSelectedSensorPosition();
+      //  double rightCurrent = frontRight.getSelectedSensorPosition();
+        Double leftTarget = leftCurrent += p;
+      //  Double rightTarget= rightCurrent += p;
+        System.out.println("Inside dirve distance: ");
+        System.out.println("Current: ", leftCurrent, " Target: ", leftTarget);
 
-        while(true){
-            drive(.5, .5);
+      //  while(true){
+           // System.out.println(leftCurrent);
+           // System.out.println(leftTarget);
+         //   drive(.5, .5);
             leftCurrent = frontLeft.getSelectedSensorPosition();
-            rightCurrent = frontRight.getSelectedSensorPosition();
-            if(leftCurrent > leftTarget){
-                return;
-            }
-            if(rightCurrent > rightTarget){
-                return;
-            }
+        //    rightCurrent = frontRight.getSelectedSensorPosition();
+        //    if(leftCurrent > leftTarget){
+         //       return;
+         //   }
+        //    if(rightCurrent > rightTarget){
+          //      return;
+         //   }
+
+
+
+            
 
 
         }

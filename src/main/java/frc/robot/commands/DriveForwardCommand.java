@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import java.lang.System;
 
-public class driveForwardCommand extends CommandBase {
+public class DriveForwardCommand extends CommandBase {
     DriveTrainSubsystem m_DriveTrainSubsystem;
 
-    public DodgeLeftCommand(DriveTrainSubsystem subsystem) {
+    public DriveForwardCommand(DriveTrainSubsystem subsystem) {
         m_DriveTrainSubsystem = subsystem;
         addRequirements(subsystem);
     }
@@ -20,7 +20,7 @@ public class driveForwardCommand extends CommandBase {
     @Override
     public void execute() {
         System.out.println("forward");
-        m_DriveTrainSubsystem.driveRev(2);
+        m_DriveTrainSubsystem.driv_distance(2);
     }
 
     @Override

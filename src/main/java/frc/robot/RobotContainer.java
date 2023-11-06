@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DodgeLeftCommand;
+import frc.robot.commands.DriveForwardCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class RobotContainer {
@@ -79,7 +80,7 @@ public class RobotContainer {
         new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
         //new Trigger(m_driveController::getBButton).onTrue(new InstantCommand(m_DriveTrainSubsystem::printSensor));
-        new Trigger(m_driveController::getBButton).onTrue(new driveForwardCommand(m_DriveTrainSubsystem::printSensor));
+        new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
     }
 
     /**
