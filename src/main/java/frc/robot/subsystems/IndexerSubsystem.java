@@ -7,12 +7,12 @@ import frc.robot.Constants;
 
 public class IndexerSubsystem {
 
-    private WPI_TalonFX indexerOneMotor = new WPI_TalonFX(Constants.);
-    private WPI_TalonFX indexerTwoMotor = new WPI_TalonFX(Constants.);
+    private WPI_TalonFX indexerOneMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_ONE);
+    private WPI_TalonFX indexerTwoMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_TWO);
 
-   // private b
+    // private b
 
-    //public IndexerSubsystem() {
+    // public IndexerSubsystem() {
 
-//    }
+    // }
 }

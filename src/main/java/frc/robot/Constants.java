@@ -40,8 +40,16 @@ public class Constants {
     public static final double SHOOTER_KI = 1 / 24576000;
     public static final double SHOOTER_KD = -1 / 49152000;
 
+    public static final double DELTA_HEIGHT = 0;
+    public static final double MOTOR_VELOCITY_CONVERSION = 0;
+
     // Limelight
 
     public static final double LIMELIGHT_GROUND_HEIGHT = 0; // TBD
     public static final double LIMELIGHT_PITCH = 0;
+
+    // Indexer Subclass
+
+    public static final int INDEXER_MOTOR_TWO = 2;
+    public static final int INDEXER_MOTOR_ONE = 1;
 }

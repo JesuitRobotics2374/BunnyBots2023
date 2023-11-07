@@ -52,46 +52,41 @@ public class DriveTrainSubsystem extends SubsystemBase {
         }
         return instance;
     }
-    public void driv_distance(int revNum){
+
+    public void driv_distance(int revNum) {
         int p = revNum / 4096;
-        
-        double leftCurrent= frontLeft.getSelectedSensorPosition();
-      //  double rightCurrent = frontRight.getSelectedSensorPosition();
+
+        double leftCurrent = frontLeft.getSelectedSensorPosition();
+        // double rightCurrent = frontRight.getSelectedSensorPosition();
         Double leftTarget = leftCurrent += p;
-      //  Double rightTarget= rightCurrent += p;
+        // Double rightTarget= rightCurrent += p;
         System.out.println("Inside dirve distance: ");
-        System.out.println("Current: ", leftCurrent, " Target: ", leftTarget);
+        System.out.println("Current: " + leftCurrent + " Target: " + leftTarget);
 
-      //  while(true){
-           // System.out.println(leftCurrent);
-           // System.out.println(leftTarget);
-         //   drive(.5, .5);
-            leftCurrent = frontLeft.getSelectedSensorPosition();
-        //    rightCurrent = frontRight.getSelectedSensorPosition();
-        //    if(leftCurrent > leftTarget){
-         //       return;
-         //   }
-        //    if(rightCurrent > rightTarget){
-          //      return;
-         //   }
+        // while(true){
+        // System.out.println(leftCurrent);
+        // System.out.println(leftTarget);
+        // drive(.5, .5);
+        leftCurrent = frontLeft.getSelectedSensorPosition();
+        // rightCurrent = frontRight.getSelectedSensorPosition();
+        // if(leftCurrent > leftTarget){
+        // return;
+        // }
+        // if(rightCurrent > rightTarget){
+        // return;
+        // }
 
+    }
 
-
-            
-
-
-        }
-        
-
-
-        /*for(int i = 0; i <= revNum; i++){
-            while(p != revNum) {
-            final double c = 17.5;
-             revNum = revNum/4096;
-             revNum *= c;
-             p = revNum;
-            
-            */  }
+    /*
+     * for(int i = 0; i <= revNum; i++){
+     * while(p != revNum) {
+     * final double c = 17.5;
+     * revNum = revNum/4096;
+     * revNum *= c;
+     * p = revNum;
+     * 
+     */
 
     public void printSensor() {
         System.out.println(frontLeft.getSelectedSensorPosition());
