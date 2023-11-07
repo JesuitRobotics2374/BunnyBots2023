@@ -1,7 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 public class Constants {
     public static final String CAN_BUS_NAME_CANIVORE = "FastFD";
     public static final String CAN_BUS_NAME_ROBORIO = "rio";
@@ -38,9 +36,9 @@ public class Constants {
     public static final double SHOOTER_RELEASE_ANGLE = 0; // TBD
     public static final int DRAG_COEFFICIENT = 1; // TBD
 
-    public static final double SHOOTER_KP = 1/12288000;
-    public static final double SHOOTER_KI = 1/24576000;
-    public static final double SHOOTER_KD = -1/49152000;
+    public static final double SHOOTER_KP = 1 / 12288000;
+    public static final double SHOOTER_KI = 1 / 24576000;
+    public static final double SHOOTER_KD = -1 / 49152000;
 
     // Limelight
 
