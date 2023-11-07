@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -28,6 +29,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private static DriveTrainSubsystem instance;
     private double target = 0;
     private double getCurrentAngle;
+    private final DigitalInput d0;
    
     public DriveTrainSubsystem() {
         if (instance == null) {
@@ -45,8 +47,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
         turnController.setTolerance(5, 5);
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
         tab.addNumber("Angle", this::getCurrentAngle);
+        d0 = new DigitalInput(0);
+        tab.addBoolean("input 1", this::getd0state);
     }
-
+    public boolean getd0state(){
+        return !d0.get();
+    }
     public void drive(double left, double right) {
         diffDrive.tankDrive(left, right);
     }
@@ -83,7 +89,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
 
         //turnController.setSetpoint(targetAngle);
-        
+
 
     }
     
@@ -98,7 +104,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         }
 
         double delta = target - CA;
-        delta = Math.abs(delta);  
+        //delta = Math.abs(delta);  
         System.out.println(delta);
         if ( delta < 0.3)  {
             target = CA;
