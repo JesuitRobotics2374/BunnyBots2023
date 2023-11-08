@@ -64,15 +64,49 @@ public class DriveTrainSubsystem extends SubsystemBase {
         return instance;
     }
 
+    public void driv_distance(int revNum) {
+        int p = revNum / 4096;
+
+        double leftCurrent = frontLeft.getSelectedSensorPosition();
+        // double rightCurrent = frontRight.getSelectedSensorPosition();
+        Double leftTarget = leftCurrent += p;
+        // Double rightTarget= rightCurrent += p;
+        System.out.println("Inside dirve distance: ");
+        System.out.println("Current: " + leftCurrent + " Target: " + leftTarget);
+
+        // while(true){
+        // System.out.println(leftCurrent);
+        // System.out.println(leftTarget);
+        // drive(.5, .5);
+        leftCurrent = frontLeft.getSelectedSensorPosition();
+        // rightCurrent = frontRight.getSelectedSensorPosition();
+        // if(leftCurrent > leftTarget){
+        // return;
+        // }
+        // if(rightCurrent > rightTarget){
+        // return;
+        // }
+
+    }
+
+    /*
+     * for(int i = 0; i <= revNum; i++){
+     * while(p != revNum) {
+     * final double c = 17.5;
+     * revNum = revNum/4096;
+     * revNum *= c;
+     * p = revNum;
+     * 
+     */
+
+    public void printSensor() {
+        System.out.println(frontLeft.getSelectedSensorPosition());
+    }
+
     public double getCurrentAngle() {
         return navX.getAngle();
     }
 
-    /**public void updateTurnTarget(double turnAmmount) {
-        turnController.setSetpoint((getCurrentAngle() + turnAmmount + 180) % 360 - 180);
-        target = (getCurrentAngle() + turnAmmount + 180) % 360 - 180;
-    }
-    **/
     public void updateTurnTarget(double turnAmmount) {
         double currentAngle = getCurrentAngle();
         if(currentAngle < 0){
@@ -92,7 +126,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
 
     }
-    
 
     public void Turn() {
         double CA = getCurrentAngle(); 
@@ -112,7 +145,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     }
 
     public boolean atSetPoint() {
-        // return turnController.atSetpoint();
-        return Math.abs((getCurrentAngle() + 180) % 360 - 180 - target) < 10;
+        return turnController.atSetpoint();
     }
 }

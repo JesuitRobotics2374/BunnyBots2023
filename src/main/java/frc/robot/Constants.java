@@ -1,7 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 public class Constants {
     public static final String CAN_BUS_NAME_CANIVORE = "FastFD";
     public static final String CAN_BUS_NAME_ROBORIO = "rio";
@@ -29,4 +27,29 @@ public class Constants {
     public static final double SPEED_MULTIPLIER = .8;
     public static final int PIGEON_ID = 0;
     public static final String DRIVER_READOUT_TAB_NAME = "Driver Readout";
+
+    // Shooter Subclass
+    public static final int SHOOTER_LEFT_MOTOR_CAN_ID = 7;
+    public static final int SHOOTER_RIGHT_MOTOR_CAN_ID = 8;
+
+    public static final double SHOOTER_GROUND_HEIGHT = 0; // TBD
+    public static final double SHOOTER_RELEASE_ANGLE = 0; // TBD
+    public static final int DRAG_COEFFICIENT = 1; // TBD
+
+    public static final double SHOOTER_KP = 1 / 12288000;
+    public static final double SHOOTER_KI = 1 / 24576000;
+    public static final double SHOOTER_KD = -1 / 49152000;
+
+    public static final double DELTA_HEIGHT = 0;
+    public static final double MOTOR_VELOCITY_CONVERSION = 0;
+
+    // Limelight
+
+    public static final double LIMELIGHT_GROUND_HEIGHT = 0; // TBD
+    public static final double LIMELIGHT_PITCH = 0;
+
+    // Indexer Subclass
+
+    public static final int INDEXER_MOTOR_TWO = 2;
+    public static final int INDEXER_MOTOR_ONE = 1;
 }
