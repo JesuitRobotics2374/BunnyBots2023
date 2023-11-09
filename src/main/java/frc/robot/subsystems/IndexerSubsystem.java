@@ -3,9 +3,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class IndexerSubsystem {
+public class IndexerSubsystem extends SubsystemBase {
 
     private WPI_TalonFX indexerOneMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_ONE);
     private WPI_TalonFX indexerTwoMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_TWO);
@@ -34,7 +35,7 @@ public class IndexerSubsystem {
 
     @Override
     public void periodic() {
-        updateIndexer()
+        updateIndexer();
     }
 
     public void forwardToShooter() {

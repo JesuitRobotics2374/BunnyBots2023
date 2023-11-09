@@ -17,8 +17,8 @@ import frc.robot.Constants;
 
 
 public class DriveTrainSubsystem extends SubsystemBase {
-    private final WPI_TalonSRX frontLeft = new WPI_TalonSRX(Constants.FRONT_LEFT_DRIVE_ID);
-    private final WPI_TalonSRX frontRight = new WPI_TalonSRX(Constants.FRONT_RIGHT_DRIVE_ID);
+    public final WPI_TalonSRX frontLeft = new WPI_TalonSRX(Constants.FRONT_LEFT_DRIVE_ID);
+    public final WPI_TalonSRX frontRight = new WPI_TalonSRX(Constants.FRONT_RIGHT_DRIVE_ID);
     private final WPI_TalonSRX backLeft = new WPI_TalonSRX(Constants.BACK_LEFT_DRIVE_ID);
     private final WPI_TalonSRX backRight = new WPI_TalonSRX(Constants.BACK_RIGHT_DRIVE_ID);
     private final DifferentialDrive diffDrive;
@@ -64,28 +64,29 @@ public class DriveTrainSubsystem extends SubsystemBase {
         return instance;
     }
 
-    public void driv_distance(int revNum) {
-        int p = revNum / 4096;
+    /*public void driv_distance(int revNum) {
+        int p = revNum * 4096;
 
-        double leftCurrent = frontLeft.getSelectedSensorPosition();
-        // double rightCurrent = frontRight.getSelectedSensorPosition();
-        Double leftTarget = leftCurrent += p;
-        // Double rightTarget= rightCurrent += p;
-        System.out.println("Inside dirve distance: ");
-        System.out.println("Current: " + leftCurrent + " Target: " + leftTarget);
+        //double leftCurrent = frontLeft.getSelectedSensorPosition();
+        double rightCurrent = frontRight.getSelectedSensorPosition();
+        //Double leftTarget = leftCurrent += p;
+        Double rightTarget= rightCurrent += p;
+        System.out.println("Inside drive distance: ");
+        System.out.println("Current: " + rightCurrent + " Target: " + rightTarget);
 
-        // while(true){
-        // System.out.println(leftCurrent);
-        // System.out.println(leftTarget);
-        // drive(.5, .5);
-        leftCurrent = frontLeft.getSelectedSensorPosition();
-        // rightCurrent = frontRight.getSelectedSensorPosition();
-        // if(leftCurrent > leftTarget){
-        // return;
-        // }
-        // if(rightCurrent > rightTarget){
-        // return;
-        // }
+        while(true){
+        System.out.println(rightCurrent);//should be left current
+       // System.out.println(leftTarget);
+        //drive(.5, .5);
+        //leftCurrent = frontLeft.getSelectedSensorPosition();
+        rightCurrent = frontRight.getSelectedSensorPosition();
+        /*if(leftCurrent > leftTarget){
+        return;
+        }
+        if(rightCurrent > rightTarget){
+        return;
+        }*/
+    }
 
     }
 
