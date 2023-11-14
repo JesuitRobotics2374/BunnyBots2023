@@ -28,30 +28,30 @@ public class DriveForwardCommand extends CommandBase {
        // int p = revNum * 4096;
 
     }
-    public void driv_distance(int revNum) {
+//     public void driv_distance(int revNum) {
 
         
-        int p = revNum * 4096;
-        m_drive.drive(.5, .5);
+//         int p = revNum * 4096;
+//         m_drive.drive(.5, .5);
 
       
-        m_leftTarget = leftCurrent += p;
-        m_rightTarget= rightCurrent += p;
+//         m_leftTarget = leftCurrent += p;
+//         m_rightTarget= rightCurrent += p;
     
-    }
+//     }
 
-    @Override
-    public void execute() {
-        System.out.println("forward");
-        m_DriveTrainSubsystem.driv_distance(2);
-    }
+//     @Override
+//     public void execute() {
+//         System.out.println("forward");
+//         m_DriveTrainSubsystem.driv_distance(2);
+//     }
 
-    @Override
-    public boolean isFinished() {
-        if(rightCurrent > rightTarget){
-            return;
-            }
-        return m_DriveTrainSubsystem.atSetPoint();
-    }
+//     @Override
+//     public boolean isFinished() {
+//         if(rightCurrent > rightTarget){
+//             return;
+//             }
+//         return m_DriveTrainSubsystem.atSetPoint();
+//     }
 
-}
+ }
