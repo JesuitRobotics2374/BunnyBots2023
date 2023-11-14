@@ -52,6 +52,7 @@ public class Constants {
 
     public static final int INDEXER_MOTOR_TWO = 6;
     public static final int INDEXER_MOTOR_ONE = 5;
+    public static final double INDEXER_MOTOR_SPIN_SPEED = 0.5;
 
     //intake subclass 
     public static final int INTAKE_MOTOR_ONE = 7;

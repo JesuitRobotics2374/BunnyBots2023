@@ -5,13 +5,19 @@ import java.lang.reflect.Array;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
 
     private WPI_TalonFX indexerOneMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_ONE);
     private WPI_TalonFX indexerTwoMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_TWO);
+    private DigitalInput sensor1 = new DigitalInput(0);
+    private DigitalInput sensor2 = new DigitalInput(1);
 
     private boolean[] position;
 
@@ -43,7 +49,7 @@ public class IndexerSubsystem extends SubsystemBase {
     public void forwardToShooter() {
         if (!position[1]) position[2] = false;
         position[1] = false;
-        cycleIndexerTwo(2);
+        cycleIndexerTwo(false);
     }
 
     public void acceptedFromIntake() {
@@ -59,20 +65,28 @@ public class IndexerSubsystem extends SubsystemBase {
         if (!position[2] && position[1]) {
             position[2] = true;
             position[1] = false;
-            cycleIndexerTwo(1);
+            cycleIndexerTwo(true);
         } 
     }
 
     public void cycleIndexerOne() {
-
+        while (!sensor1.get()) indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED); 
+        indexerOneMotor.stopMotor();
     }
 
-    public void cycleIndexerTwo(int pos) {
-        /*
-         * pos = 2,3
-         * 
-         * rotate until sensor pos detects ball
-         */
+    public void cycleIndexerTwo(boolean shoot) { 
+        if (shoot) { //If this function is called to shoot, turn motor until ball has left position 2
+            while (sensor2.get()) {
+                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+            }
+        } else { //If this function is called to a ball to position 2, turn motor until ball has entered position 2
+            while (!sensor2.get()) {
+                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+            }
+        }
+
+        //Stop motor once condition met
+        indexerTwoMotor.stopMotor();
     }
 
 }
