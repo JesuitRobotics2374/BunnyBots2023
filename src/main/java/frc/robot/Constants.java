@@ -50,6 +50,11 @@ public class Constants {
 
     // Indexer Subclass
 
-    public static final int INDEXER_MOTOR_TWO = 2;
-    public static final int INDEXER_MOTOR_ONE = 1;
+    public static final int INDEXER_MOTOR_TWO = 6;
+    public static final int INDEXER_MOTOR_ONE = 5;
+
+    //intake subclass 
+    public static final int INTAKE_MOTOR_ONE = 7;
+    
+
 }
