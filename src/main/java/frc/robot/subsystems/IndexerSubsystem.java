@@ -49,7 +49,7 @@ public class IndexerSubsystem extends SubsystemBase {
     public void forwardToShooter() {
         if (!position[1]) position[2] = false;
         position[1] = false;
-        cycleIndexerTwo(false);
+        // tryCyclingIndexerTwo(false);
     }
 
     public void acceptedFromIntake() {
@@ -58,35 +58,36 @@ public class IndexerSubsystem extends SubsystemBase {
 
     public void updateIndexer() {
         if (!position[1] && position[0]) {
-            position[1] = true;
-            position[0] = false;
-            cycleIndexerOne();
+            tryCyclingIndexerOne();
         }
         if (!position[2] && position[1]) {
-            position[2] = true;
-            position[1] = false;
-            cycleIndexerTwo(true);
+            tryCyclingIndexerTwo();
         } 
     }
 
-    public void cycleIndexerOne() {
-        while (!sensor1.get()) indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED); 
-        indexerOneMotor.stopMotor();
+    public void tryCyclingIndexerOne() {
+        if (!sensor1.get()) {
+            indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        } else {
+            position[1] = true;
+            position[0] = false;
+            indexerOneMotor.stopMotor();
+        }
     }
 
-    public void cycleIndexerTwo(boolean shoot) { 
-        if (shoot) { //If this function is called to shoot, turn motor until ball has left position 2
-            while (sensor2.get()) {
-                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-            }
-        } else { //If this function is called to a ball to position 2, turn motor until ball has entered position 2
-            while (!sensor2.get()) {
-                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-            }
+    public void tryCyclingIndexerTwo() { 
+        if (!sensor2.get()) {
+            indexerTwoMotor.set(Constants.INDEXER_MOTOR_ONE);
+        } else {
+            position[2] = true;
+            position[1] = false;
+            indexerTwoMotor.stopMotor();
         }
+    }
 
-        //Stop motor once condition met
-        indexerTwoMotor.stopMotor();
+    public void shoot() {
+        //How to have motor two move so that can shoot
+
     }
 
 }
