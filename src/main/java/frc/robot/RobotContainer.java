@@ -9,13 +9,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DodgeLeftCommand;
 import frc.robot.commands.DriveForwardCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class RobotContainer {
 
     // private final AutonomousChooser autonomousChooser = new AutonomousChooser(
     // new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
     DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
+    IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
 
     private final XboxController m_driveController = new XboxController(Constants.CONTROLLER_USB_PORT_DRIVER);
     // private final XboxController m_operatorController = new
@@ -69,8 +72,8 @@ public class RobotContainer {
      */
     public void configureShuffleBoard() {
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
-        tab.addBoolean("Skrt skrt (slow)", this::getSlowMode);
-        tab.addBoolean("Vroom vroom (fast)", this::getTurboMode);
+        tab.addBoolean("Skrt skrt", this::getSlowMode);
+        tab.addBoolean("Vroom vroom", this::getTurboMode);
     }
 
     /**
@@ -80,8 +83,10 @@ public class RobotContainer {
         new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
         new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
-        //new Trigger(m_driveController::getBButton).onTrue(new InstantCommand(m_DriveTrainSubsystem::printSensor));
+        // new Trigger(m_driveController::getBButton).onTrue(new
+        // InstantCommand(m_DriveTrainSubsystem::printSensor));
         new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
+        new Trigger(m_driveController::getYButton).onTrue(new IntakeCommand(m_IntakeSubsystem));
     }
 
     /**
@@ -179,10 +184,6 @@ public class RobotContainer {
         return m_DriveTrainSubsystem;
     }
 
-    
-
-
-
     /**
      * Get the slow boolean
      * 
@@ -201,5 +202,3 @@ public class RobotContainer {
         return (driveMode == 1);
     }
 }
-
-
