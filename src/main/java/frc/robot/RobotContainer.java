@@ -11,6 +11,7 @@ import frc.robot.commands.DodgeLeftCommand;
 import frc.robot.commands.DriveForwardCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class RobotContainer {
@@ -19,6 +20,7 @@ public class RobotContainer {
     // new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
     DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
     IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+    IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
 
     private final XboxController m_driveController = new XboxController(Constants.CONTROLLER_USB_PORT_DRIVER);
     // private final XboxController m_operatorController = new
@@ -87,6 +89,7 @@ public class RobotContainer {
         // InstantCommand(m_DriveTrainSubsystem::printSensor));
         new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
         new Trigger(m_driveController::getYButton).onTrue(new IntakeCommand(m_IntakeSubsystem));
+        new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(m_IndexerSubsystem::shoot));
     }
 
     /**

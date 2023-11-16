@@ -20,6 +20,7 @@ public class IndexerSubsystem extends SubsystemBase {
     private DigitalInput sensor2 = new DigitalInput(1);
 
     private boolean[] position;
+    private boolean shoot;
 
     public IndexerSubsystem() {
         indexerOneMotor.getSelectedSensorVelocity();
@@ -76,18 +77,28 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void tryCyclingIndexerTwo() { 
-        if (!sensor2.get()) {
-            indexerTwoMotor.set(Constants.INDEXER_MOTOR_ONE);
+        if (shoot) {
+            if (sensor2.get()) {
+                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+            } else {
+                position[2] = (position[1]);
+                position[1] = false;
+                shoot = false;
+                indexerTwoMotor.stopMotor();
+            }
         } else {
-            position[2] = true;
-            position[1] = false;
-            indexerTwoMotor.stopMotor();
+            if (!sensor2.get()) {
+                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+            } else {
+                position[2] = (position[1]);
+                position[1] = false;
+                indexerTwoMotor.stopMotor();
+            }
         }
     }
 
     public void shoot() {
-        //How to have motor two move so that can shoot
-
+        shoot = true;
     }
 
 }
