@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DodgeLeftCommand;
 import frc.robot.commands.DriveForwardCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -88,12 +87,13 @@ public class RobotContainer {
         // new Trigger(m_driveController::getBButton).onTrue(new
         // InstantCommand(m_DriveTrainSubsystem::printSensor));
         new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
-        new Trigger(m_driveController::getYButton).onTrue(new IntakeCommand(m_IntakeSubsystem));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(m_IndexerSubsystem::shoot));
+        // new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(m_IntakeSubsystem::spin));
+        // new Trigger(m_driveController::getLeftBumper).onFalse(new InstantCommand(m_IntakeSubsystem::stop));
     }
 
     /**
-     * Adjusts the input to remove the tolerance while retaining a smooth line with
+     * Adjusts the input to remove the tolerance w hile retaining a smooth line with
      * tolerance as 0 and 100 as 100
      * 
      * @param value     The value to adjust

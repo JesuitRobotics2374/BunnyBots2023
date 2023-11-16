@@ -13,8 +13,10 @@ public class IntakeSubsystem extends SubsystemBase {
      * 
      */
     public final WPI_TalonSRX indexer = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ONE);
+    public static IntakeSubsystem instance;
 
     public IntakeSubsystem() {
+        instance = this;
     }
 
     public void spin() {
@@ -23,7 +25,14 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        indexer.set(0);
+        indexer.stopMotor();
+    }
+
+    public static IntakeSubsystem getInstance() {
+        if (instance == null) {
+            instance = new IntakeSubsystem();
+        }
+        return instance;
     }
 
     // Speed in units / 100ms for value
