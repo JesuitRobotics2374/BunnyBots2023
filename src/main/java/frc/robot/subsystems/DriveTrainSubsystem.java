@@ -64,6 +64,36 @@ public class DriveTrainSubsystem extends SubsystemBase {
         return instance;
     }
 
+    public void driv_distance(int desired_distance){
+        navX.resetDisplacement();
+        float start_x = navX.getDisplacementX();
+        float start_y = navX.getDisplacementY();
+
+        float current_x = start_x;
+        float current_y = start_y;
+
+        drive(0.4, 0.4);
+
+        current_x = navX.getDisplacementX();
+        current_y = navX.getDisplacementY();
+
+        //  CALCULATE DISTANCE BETWEEN CURENT AND START POINT
+        // AND STORE IN A float named "distance"
+        //
+
+       float delta_x = current_x - start_x;
+       float delta_y = current_y - start_y;
+
+        float distance = (float) Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+
+        //  Check if distance is greater than deisred distance
+        if ( distance > desired_distance)
+        {
+            //stop lol
+
+        }
+    }
+
     /*public void driv_distance(int revNum) {
         int p = revNum * 4096;
 
