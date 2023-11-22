@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -14,8 +13,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-
-
 public class DriveTrainSubsystem extends SubsystemBase {
     public final WPI_TalonSRX frontLeft = new WPI_TalonSRX(Constants.FRONT_LEFT_DRIVE_ID);
     public final WPI_TalonSRX frontRight = new WPI_TalonSRX(Constants.FRONT_RIGHT_DRIVE_ID);
@@ -28,9 +25,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private PIDController turnController = new PIDController(1 / 180, 1 / 200, -1 / 200);
     private static DriveTrainSubsystem instance;
     private double target = 0;
-    private double getCurrentAngle;
     private final DigitalInput d0;
-   
+
     public DriveTrainSubsystem() {
         if (instance == null) {
             instance = this;
@@ -50,9 +46,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
         d0 = new DigitalInput(0);
         tab.addBoolean("input 1", this::getd0state);
     }
-    public boolean getd0state(){
+
+    public boolean getd0state() {
         return !d0.get();
     }
+
     public void drive(double left, double right) {
         diffDrive.tankDrive(left, right);
     }
@@ -64,7 +62,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         return instance;
     }
 
-    public void driv_distance(int desired_distance){
+    public void driv_distance(int desired_distance) {
         navX.resetDisplacement();
         float start_x = navX.getDisplacementX();
         float start_y = navX.getDisplacementY();
@@ -77,48 +75,49 @@ public class DriveTrainSubsystem extends SubsystemBase {
         current_x = navX.getDisplacementX();
         current_y = navX.getDisplacementY();
 
-        //  CALCULATE DISTANCE BETWEEN CURENT AND START POINT
+        // CALCULATE DISTANCE BETWEEN CURENT AND START POINT
         // AND STORE IN A float named "distance"
         //
 
-       float delta_x = current_x - start_x;
-       float delta_y = current_y - start_y;
+        float delta_x = current_x - start_x;
+        float delta_y = current_y - start_y;
 
         float distance = (float) Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
 
-        //  Check if distance is greater than deisred distance
-        if ( distance > desired_distance)
-        {
-            //stop lol
+        // Check if distance is greater than deisred distance
+        if (distance > desired_distance) {
+            // stop lol
 
         }
     }
 
-    /*public void driv_distance(int revNum) {
-        int p = revNum * 4096;
+    /*
+     * public void driv_distance(int revNum) {
+     * int p = revNum * 4096;
+     * 
+     * //double leftCurrent = frontLeft.getSelectedSensorPosition();
+     * double rightCurrent = frontRight.getSelectedSensorPosition();
+     * //Double leftTarget = leftCurrent += p;
+     * Double rightTarget= rightCurrent += p;
+     * System.out.println("Inside drive distance: ");
+     * System.out.println("Current: " + rightCurrent + " Target: " + rightTarget);
+     * 
+     * while(true){
+     * System.out.println(rightCurrent);//should be left current
+     * // System.out.println(leftTarget);
+     * //drive(.5, .5);
+     * //leftCurrent = frontLeft.getSelectedSensorPosition();
+     * rightCurrent = frontRight.getSelectedSensorPosition();
+     * /*if(leftCurrent > leftTarget){
+     * return;
+     * }
+     * if(rightCurrent > rightTarget){
+     * return;
+     * }
+     */
+    // }
 
-        //double leftCurrent = frontLeft.getSelectedSensorPosition();
-        double rightCurrent = frontRight.getSelectedSensorPosition();
-        //Double leftTarget = leftCurrent += p;
-        Double rightTarget= rightCurrent += p;
-        System.out.println("Inside drive distance: ");
-        System.out.println("Current: " + rightCurrent + " Target: " + rightTarget);
-
-        while(true){
-        System.out.println(rightCurrent);//should be left current
-       // System.out.println(leftTarget);
-        //drive(.5, .5);
-        //leftCurrent = frontLeft.getSelectedSensorPosition();
-        rightCurrent = frontRight.getSelectedSensorPosition();
-        /*if(leftCurrent > leftTarget){
-        return;
-        }
-        if(rightCurrent > rightTarget){
-        return;
-        }*/
-    //}
-
-    //}
+    // }
 
     /*
      * for(int i = 0; i <= revNum; i++){
@@ -140,37 +139,35 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     public void updateTurnTarget(double turnAmmount) {
         double currentAngle = getCurrentAngle();
-        if(currentAngle < 0){
+        if (currentAngle < 0) {
             System.out.println(currentAngle);
         }
         double targetAngle = currentAngle + turnAmmount;
         System.out.println(currentAngle);
         System.out.println(targetAngle);
-        if(targetAngle >=360){
-            targetAngle = targetAngle -360;
+        if (targetAngle >= 360) {
+            targetAngle = targetAngle - 360;
         }
         target = targetAngle;
         Turn();
 
-
-        //turnController.setSetpoint(targetAngle);
-
+        // turnController.setSetpoint(targetAngle);
 
     }
 
     public void Turn() {
-        double CA = getCurrentAngle(); 
+        double CA = getCurrentAngle();
 
         if (target < CA) {
-           drive(.3, -.3);
+            drive(.3, -.3);
         } else {
-           drive(-.3, .3);
+            drive(-.3, .3);
         }
 
         double delta = target - CA;
-        //delta = Math.abs(delta);  
+        // delta = Math.abs(delta);
         System.out.println(delta);
-        if ( delta < 0.3)  {
+        if (delta < 0.3) {
             target = CA;
         }
     }

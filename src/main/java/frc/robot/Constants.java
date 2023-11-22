@@ -33,15 +33,15 @@ public class Constants {
     public static final int SHOOTER_RIGHT_MOTOR_CAN_ID = 8;
 
     public static final double SHOOTER_GROUND_HEIGHT = 0; // TBD
-    public static final double SHOOTER_RELEASE_ANGLE = 0; // TBD
-    public static final int DRAG_COEFFICIENT = 1; // TBD
+    public static final double SHOOTER_RELEASE_ANGLE = Math.PI / 3; // TBD
+    public static final double DRAG_COEFFICIENT = 0.1; // TBD
 
-    public static final double SHOOTER_KP = 1 / 12288000;
-    public static final double SHOOTER_KI = 1 / 24576000;
-    public static final double SHOOTER_KD = -1 / 49152000;
+    public static final double SHOOTER_KP = .25;
+    public static final double SHOOTER_KI = .00025;
+    public static final double SHOOTER_KD = .0;
 
     public static final double DELTA_HEIGHT = 0;
-    public static final double MOTOR_VELOCITY_CONVERSION = 0;
+    public static final double MOTOR_VELOCITY_CONVERSION = 2048 / (Math.PI * 2 * 0.0508 * 10);
 
     // Limelight
 
@@ -54,8 +54,7 @@ public class Constants {
     public static final int INDEXER_MOTOR_ONE = 5;
     public static final double INDEXER_MOTOR_SPIN_SPEED = 0.5;
 
-    //intake subclass 
+    // intake subclass
     public static final int INTAKE_MOTOR_ONE = 7;
-    
 
 }

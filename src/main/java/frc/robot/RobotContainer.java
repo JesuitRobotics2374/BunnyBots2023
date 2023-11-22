@@ -12,14 +12,16 @@ import frc.robot.commands.DriveForwardCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
 
     // private final AutonomousChooser autonomousChooser = new AutonomousChooser(
     // new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
     DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
-    IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
-    IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
+    // IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+    // IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
+    ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
     private final XboxController m_driveController = new XboxController(Constants.CONTROLLER_USB_PORT_DRIVER);
     // private final XboxController m_operatorController = new
@@ -87,9 +89,16 @@ public class RobotContainer {
         // new Trigger(m_driveController::getBButton).onTrue(new
         // InstantCommand(m_DriveTrainSubsystem::printSensor));
         new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
-        new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(m_IndexerSubsystem::shoot));
-        // new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(m_IntakeSubsystem::spin));
-        // new Trigger(m_driveController::getLeftBumper).onFalse(new InstantCommand(m_IntakeSubsystem::stop));
+        // new Trigger(m_driveController::getRightBumper).onTrue(new
+        // InstantCommand(m_IndexerSubsystem::shoot));
+        new Trigger(m_driveController::getYButton)
+                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(3, 1.06)));
+        new Trigger(m_driveController::getXButton)
+                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.stopMotor()));
+        // new Trigger(m_driveController::getLeftBumper).onTrue(new
+        // InstantCommand(m_IntakeSubsystem::spin));
+        // new Trigger(m_driveController::getLeftBumper).onFalse(new
+        // InstantCommand(m_IntakeSubsystem::stop));
     }
 
     /**

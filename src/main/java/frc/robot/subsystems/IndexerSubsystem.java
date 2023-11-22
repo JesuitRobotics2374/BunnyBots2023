@@ -1,15 +1,9 @@
 package frc.robot.subsystems;
 
-import java.lang.reflect.Array;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
@@ -48,7 +42,8 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void forwardToShooter() {
-        if (!position[1]) position[2] = false;
+        if (!position[1])
+            position[2] = false;
         position[1] = false;
         // tryCyclingIndexerTwo(false);
     }
@@ -63,7 +58,7 @@ public class IndexerSubsystem extends SubsystemBase {
         }
         if (!position[2] && position[1]) {
             tryCyclingIndexerTwo();
-        } 
+        }
     }
 
     public void tryCyclingIndexerOne() {
@@ -76,7 +71,7 @@ public class IndexerSubsystem extends SubsystemBase {
         }
     }
 
-    public void tryCyclingIndexerTwo() { 
+    public void tryCyclingIndexerTwo() {
         if (shoot) {
             if (sensor2.get()) {
                 indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
