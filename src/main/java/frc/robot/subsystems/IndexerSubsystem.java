@@ -92,6 +92,16 @@ public class IndexerSubsystem extends SubsystemBase {
         }
     }
 
+    public void cycleIndexers() {
+        indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    }
+
+    public void stopCycleIndexers() {
+        indexerTwoMotor.stopMotor();
+        indexerOneMotor.stopMotor();
+    }
+
     public void shoot() {
         shoot = true;
     }

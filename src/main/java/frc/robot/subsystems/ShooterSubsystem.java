@@ -44,6 +44,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
+    public void shootFromLimeLight() {
+        // Input from limelight
+        double phi = 0;
+
+        fireFromConstants((Constants.DELTA_HEIGHT * Math.sin(90 - phi) / Math.sin(phi)), 1.06);
+    }
+
     public double calculateFinalMotorVelocity(double distance, double correction) {
         // NEVER EVER TOUCH THIS
         return (((Math.pow(distance, correction)) / Math.cos(Constants.SHOOTER_RELEASE_ANGLE))
