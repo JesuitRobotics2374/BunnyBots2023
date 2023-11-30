@@ -100,6 +100,9 @@ public class ShooterSubsystem extends SubsystemBase {
         double deltaX = xValue - previousXValue;
         double deltaY = yValue - previousYValue;
 
+        previousXValue = deltaX;
+        previousYValue = deltaY;
+
         velocityMagnitudeQueue.removeLast();
         velocityThetaQueue.removeLast();
 
@@ -111,8 +114,11 @@ public class ShooterSubsystem extends SubsystemBase {
     public void updateWeightedVelocityAndTheta() {
         int n = velocityMagnitudeQueue.size();
 
+        int magnitudeSum = 0;
+        double thetaSum = 0;
         for (int i = 0; i < n - 1; i++) {
-
+            magnitudeSum += velocityMagnitudeQueue.get(i);
+            thetaSum += velocityThetaQueue.get(i);
         }
     }
 }
