@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
+import java.rmi.dgc.VMID;
+import java.util.LinkedList;
+import java.util.Deque;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Dynamic;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +21,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private WPI_TalonFX shooterLeftMotor = new WPI_TalonFX(Constants.SHOOTER_LEFT_MOTOR_CAN_ID);
     // private WPI_TalonFX shooterRightMotor = new
     // WPI_TalonFX(Constants.SHOOTER_RIGHT_MOTOR_CAN_ID);
+    static Double previousXValue = 0D;
+    static Double previousYValue = 0D;
+    Deque<Double> velocityMagnitudeQueue = new LinkedList<>();
+    Deque<Double> velocityThetaQueue = new LinkedList<>();
 
     public ShooterSubsystem() {
         // shooterRightMotor.setInverted(true);
@@ -83,4 +93,26 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterLeftMotor.stopMotor();
     }
 
+
+    /// AUTOMATIC TARGETING ///
+
+    public void updateVelocitiesAndPositions(double xValue, double yValue) {
+        double deltaX = xValue - previousXValue;
+        double deltaY = yValue - previousYValue;
+
+        velocityMagnitudeQueue.removeLast();
+        velocityThetaQueue.removeLast();
+
+        //Velocity is in m per 50 ms
+        velocityMagnitudeQueue.add(Math.sqrt(deltaX) + Math.sqrt(deltaY) / 50);
+        velocityThetaQueue.add(Math.atan(deltaY / deltaX)); //May be tan or atan
+    }
+
+    public void updateWeightedVelocityAndTheta() {
+        int n = velocityMagnitudeQueue.size();
+
+        for (int i = 0; i < n - 1; i++) {
+
+        }
+    }
 }

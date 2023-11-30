@@ -43,6 +43,8 @@ public class Constants {
     public static final double DELTA_HEIGHT = 0;
     public static final double MOTOR_VELOCITY_CONVERSION = 2048 / (Math.PI * 2 * 0.0508 * 10);
 
+    public static final double[] weightValues = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //TODO
+
     // Limelight
 
     public static final double LIMELIGHT_GROUND_HEIGHT = 0; // TBD
@@ -54,7 +56,7 @@ public class Constants {
     public static final int INDEXER_MOTOR_ONE = 5;
     public static final double INDEXER_MOTOR_SPIN_SPEED = 0.5;
 
-    // intake subclass
+    // Intake subclass
     public static final int INTAKE_MOTOR_ONE = 7;
 
 }
