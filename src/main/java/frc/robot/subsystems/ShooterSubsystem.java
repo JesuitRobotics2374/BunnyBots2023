@@ -117,8 +117,8 @@ public class ShooterSubsystem extends SubsystemBase {
         int magnitudeSum = 0;
         double thetaSum = 0;
         for (int i = 0; i < n - 1; i++) {
-            magnitudeSum += velocityMagnitudeQueue.get(i);
-            thetaSum += velocityThetaQueue.get(i);
+            // magnitudeSum += velocityMagnitudeQueue.get(i);
+            // thetaSum += velocityThetaQueue.get(i);
         }
     }
 }

@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+// import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -10,15 +11,17 @@ public class IndexerSubsystem extends SubsystemBase {
 
     private WPI_TalonFX indexerOneMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_ONE);
     private WPI_TalonFX indexerTwoMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_TWO);
-    private DigitalInput sensor1 = new DigitalInput(0);
-    private DigitalInput sensor2 = new DigitalInput(1);
+    // private DigitalInput sensor1 = new DigitalInput(0);
+    // private DigitalInput sensor2 = new DigitalInput(1);
 
     private boolean[] position;
-    private boolean shoot;
+    // private boolean shoot;
 
     public IndexerSubsystem() {
         indexerOneMotor.getSelectedSensorVelocity();
         indexerTwoMotor.getSelectedSensorVelocity();
+        indexerOneMotor.setInverted(true);
+        indexerTwoMotor.setInverted(true);
 
         position = new boolean[3];
 
@@ -34,7 +37,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updateIndexer();
+        // updateIndexer();
     }
 
     public boolean readyToShoot() {
@@ -52,45 +55,45 @@ public class IndexerSubsystem extends SubsystemBase {
         position[0] = true;
     }
 
-    public void updateIndexer() {
-        if (!position[1] && position[0]) {
-            tryCyclingIndexerOne();
-        }
-        if (!position[2] && position[1]) {
-            tryCyclingIndexerTwo();
-        }
-    }
+    // public void updateIndexer() {
+    //     if (!position[1] && position[0]) {
+    //         tryCyclingIndexerOne();
+    //     }
+    //     if (!position[2] && position[1]) {
+    //         tryCyclingIndexerTwo();
+    //     }
+    // }
 
-    public void tryCyclingIndexerOne() {
-        if (!sensor1.get()) {
-            indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-        } else {
-            position[1] = true;
-            position[0] = false;
-            indexerOneMotor.stopMotor();
-        }
-    }
+    // public void tryCyclingIndexerOne() {
+    //     if (!sensor1.get()) {
+    //         indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    //     } else {
+    //         position[1] = true;
+    //         position[0] = false;
+    //         indexerOneMotor.stopMotor();
+    //     }
+    // }
 
-    public void tryCyclingIndexerTwo() {
-        if (shoot) {
-            if (sensor2.get()) {
-                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-            } else {
-                position[2] = (position[1]);
-                position[1] = false;
-                shoot = false;
-                indexerTwoMotor.stopMotor();
-            }
-        } else {
-            if (!sensor2.get()) {
-                indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-            } else {
-                position[2] = (position[1]);
-                position[1] = false;
-                indexerTwoMotor.stopMotor();
-            }
-        }
-    }
+    // public void tryCyclingIndexerTwo() {
+    //     if (shoot) {
+    //         if (sensor2.get()) {
+    //             indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    //         } else {
+    //             position[2] = (position[1]);
+    //             position[1] = false;
+    //             shoot = false;
+    //             indexerTwoMotor.stopMotor();
+    //         }
+    //     } else {
+    //         if (!sensor2.get()) {
+    //             indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    //         } else {
+    //             position[2] = (position[1]);
+    //             position[1] = false;
+    //             indexerTwoMotor.stopMotor();
+    //         }
+    //     }
+    // }
 
     public void cycleIndexers() {
         indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
@@ -102,8 +105,8 @@ public class IndexerSubsystem extends SubsystemBase {
         indexerOneMotor.stopMotor();
     }
 
-    public void shoot() {
-        shoot = true;
-    }
+    // public void shoot() {
+    //     shoot = true;
+    // }
 
 }

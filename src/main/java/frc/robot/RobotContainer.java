@@ -19,8 +19,8 @@ public class RobotContainer {
     // private final AutonomousChooser autonomousChooser = new AutonomousChooser(
     // new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
     DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
-    // IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
-    // IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
+    IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+    IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
     ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
     private final XboxController m_driveController = new XboxController(Constants.CONTROLLER_USB_PORT_DRIVER);
@@ -83,18 +83,26 @@ public class RobotContainer {
      * Setup all of the button controls for the robot
      */
     public void configureButtonBindings() {
-        new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
-        new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
-        new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
+        // new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
+        // new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
+        // new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
         // new Trigger(m_driveController::getBButton).onTrue(new
         // InstantCommand(m_DriveTrainSubsystem::printSensor));
-        new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
+        // new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
         // new Trigger(m_driveController::getRightBumper).onTrue(new
         // InstantCommand(m_IndexerSubsystem::shoot));
         new Trigger(m_driveController::getYButton)
-                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(3, 1.06)));
+                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(11, 1.06)));
         new Trigger(m_driveController::getXButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.stopMotor()));
+        new Trigger(m_driveController::getAButton)
+                .onTrue(new InstantCommand(() -> m_IndexerSubsystem.cycleIndexers()));
+        new Trigger(m_driveController::getAButton)
+                .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopCycleIndexers()));
+        new Trigger(m_driveController::getBButton)
+                .onTrue(new InstantCommand(() -> m_IntakeSubsystem.spin()));
+        new Trigger(m_driveController::getBButton)
+                .onFalse(new InstantCommand(() -> m_IntakeSubsystem.stop()));
         // new Trigger(m_driveController::getLeftBumper).onTrue(new
         // InstantCommand(m_IntakeSubsystem::spin));
         // new Trigger(m_driveController::getLeftBumper).onFalse(new
