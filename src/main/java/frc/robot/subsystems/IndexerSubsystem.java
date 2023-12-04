@@ -96,8 +96,8 @@ public class IndexerSubsystem extends SubsystemBase {
         indexerOneMotor.stopMotor();
     }
 
-    // public void shoot() {
-    //     shoot = true;
-    // }
+    public void shoot() {
+        shoot = true;
+    }
 
 }
