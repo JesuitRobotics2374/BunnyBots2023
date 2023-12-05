@@ -25,7 +25,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     private PIDController turnController = new PIDController(1 / 180, 1 / 200, -1 / 200);
     private static DriveTrainSubsystem instance;
     private double target = 0;
-    private final DigitalInput d0;
 
     public DriveTrainSubsystem() {
         if (instance == null) {
@@ -43,12 +42,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
         turnController.setTolerance(5, 5);
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
         tab.addNumber("Angle", this::getCurrentAngle);
-        d0 = new DigitalInput(0);
-        tab.addBoolean("input 1", this::getd0state);
-    }
-
-    public boolean getd0state() {
-        return !d0.get();
     }
 
     public void drive(double left, double right) {

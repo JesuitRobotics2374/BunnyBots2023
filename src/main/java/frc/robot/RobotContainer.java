@@ -11,7 +11,6 @@ import frc.robot.commands.DodgeLeftCommand;
 import frc.robot.commands.DriveForwardCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
@@ -19,7 +18,6 @@ public class RobotContainer {
     // private final AutonomousChooser autonomousChooser = new AutonomousChooser(
     // new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
     DriveTrainSubsystem m_DriveTrainSubsystem = new DriveTrainSubsystem();
-    IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
     IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
     ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
@@ -92,7 +90,7 @@ public class RobotContainer {
         // new Trigger(m_driveController::getRightBumper).onTrue(new
         // InstantCommand(m_IndexerSubsystem::shoot));
         new Trigger(m_driveController::getYButton)
-                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(11, 1.06)));
+                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(5, 1.06)));
         new Trigger(m_driveController::getXButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.stopMotor()));
         new Trigger(m_driveController::getAButton)
@@ -100,9 +98,9 @@ public class RobotContainer {
         new Trigger(m_driveController::getAButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopCycleIndexers()));
         new Trigger(m_driveController::getBButton)
-                .onTrue(new InstantCommand(() -> m_IntakeSubsystem.spin()));
+                .onTrue(new InstantCommand(() -> m_IndexerSubsystem.spinIntake()));
         new Trigger(m_driveController::getBButton)
-                .onFalse(new InstantCommand(() -> m_IntakeSubsystem.stop()));
+                .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopIntake()));
         // new Trigger(m_driveController::getLeftBumper).onTrue(new
         // InstantCommand(m_IntakeSubsystem::spin));
         // new Trigger(m_driveController::getLeftBumper).onFalse(new
