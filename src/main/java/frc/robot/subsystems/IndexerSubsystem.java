@@ -78,7 +78,7 @@ public class IndexerSubsystem extends SubsystemBase {
     public void tryCyclingIndexerTwo() {
         if (shoot ^ sensor2.get()) {
             position[2] = position[1];
-            position[1];
+            position[1] = false;
             shoot = false;
             indexerTwoMotor.stopMotor();
         } else {
