@@ -25,8 +25,8 @@ public class RobotContainer {
     // private final XboxController m_operatorController = new
     // XboxController(Constants.CONTROLLER_USB_PORT_OPERATOR);
 
-    private SlewRateLimiter leftLimiter = new SlewRateLimiter(2.5);
-    private SlewRateLimiter rightLimiter = new SlewRateLimiter(2.5);
+    private SlewRateLimiter leftLimiter = new SlewRateLimiter(5);
+    private SlewRateLimiter rightLimiter = new SlewRateLimiter(5);
 
     private int driveMode = 0;
 

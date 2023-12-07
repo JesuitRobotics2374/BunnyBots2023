@@ -20,7 +20,7 @@ public class IndexerSubsystem extends SubsystemBase {
     private DigitalInput sensor0 = new DigitalInput(0);
     private DigitalInput sensor1 = new DigitalInput(1);
     private DigitalInput sensor2 = new DigitalInput(2);
-    private Debouncer debouncer0 = new Debouncer(.1, DebounceType.kBoth);
+    private Debouncer debouncer0 = new Debouncer(.1, DebounceType.kRising);
     private Debouncer debouncer1 = new Debouncer(.1, DebounceType.kBoth);
     private Debouncer debouncer2 = new Debouncer(.1, DebounceType.kBoth);
     private boolean[] position;
@@ -67,8 +67,8 @@ public class IndexerSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // updateIndexer();
-        // recievedIntake();
+        updateIndexer();
+        recievedIntake();
     }
 
     public boolean readyToShoot() {
@@ -98,7 +98,7 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void tryCyclingIndexerOne() {
-        if (debouncer1.calculate(sensor1.get())) {
+        if (debouncer1.calculate(!sensor1.get())) {
             indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         } else {
             position[1] = true;
