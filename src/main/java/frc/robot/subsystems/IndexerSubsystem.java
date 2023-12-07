@@ -71,6 +71,10 @@ public class IndexerSubsystem extends SubsystemBase {
         // recievedIntake();
     }
 
+    public void shoot() {
+        shoot = true;
+    }
+
     public boolean readyToShoot() {
         return position[2];
     }
@@ -82,19 +86,10 @@ public class IndexerSubsystem extends SubsystemBase {
         }
     }
 
-    public void forwardToShooter() {
-        if (!position[1]) position[2] = false;
-        position[1] = false;
-        tryCyclingIndexerTwo();
-    }
-
-    public void acceptedFromIntake() {
-        position[0] = true;
-    }
-
     public void updateIndexer() {
         if (!position[1] && position[0]) tryCyclingIndexerOne();
         if (!position[2] && position[1]) tryCyclingIndexerTwo();
+        if (position[2] && shoot) tryCyclingIndexerTwo();
     }
 
     public void tryCyclingIndexerOne() {
@@ -108,13 +103,13 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void tryCyclingIndexerTwo() {
-        if (shoot ^ debouncer2.calculate(!sensor2.get())) {
+        if (shoot == debouncer2.calculate(!sensor2.get())) {
+            indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        } else {
             position[2] = position[1];
             position[1] = false;
             shoot = false;
             indexerTwoMotor.stopMotor();
-        } else {
-            indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         }
     }
 
@@ -136,10 +131,6 @@ public class IndexerSubsystem extends SubsystemBase {
 
     public void stopCycleOneMotor() {
         indexerOneMotor.stopMotor();
-    }
-
-    public void shoot() {
-        shoot = true;
     }
 
     public boolean getShoot() {
