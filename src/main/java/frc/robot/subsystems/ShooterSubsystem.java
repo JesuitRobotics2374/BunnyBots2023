@@ -1,16 +1,12 @@
 package frc.robot.subsystems;
 
-import java.rmi.dgc.VMID;
 import java.util.LinkedList;
-import java.util.Deque;
+import java.util.Queue;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Dynamic;
-
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +17,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private WPI_TalonFX shooterLeftMotor = new WPI_TalonFX(Constants.SHOOTER_LEFT_MOTOR_CAN_ID);
     // private WPI_TalonFX shooterRightMotor = new
     // WPI_TalonFX(Constants.SHOOTER_RIGHT_MOTOR_CAN_ID);
+    public LinkedList<Double> xPos = new LinkedList<>();
+    public LinkedList<Double> yPos = new LinkedList<>();
+    public int index = 0;
+    public boolean willHit = false;
 
     public ShooterSubsystem() {
         // shooterRightMotor.setInverted(true);
@@ -47,7 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        updateFireTruths();
     }
 
     public void shootFromLimeLight() {
@@ -92,7 +92,57 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /// AUTOMATIC TARGETING ///
 
-    public void function() {
-
+    public void updateFireTruths() {
+        double currentX = 0; //TODO get from limeligh
+        double currentY = 0; //TODO get from limelight
+        xPos.addFirst(currentX);
+        yPos.addFirst(currentY);
+        xPos.removeLast();
+        yPos.removeLast();
+        double[] xVelArray = new double[4];
+        double[] yVelArray = new double[4];
+        int xTot = 0;
+        int yTot = 0;
+        for (int i = 0; i < 4; i++) {
+            if (!Double.isNaN(xPos.get(i)) && !Double.isNaN(xPos.get(i+1))) {
+                xVelArray[i] = xPos.get(i) - xPos.get(i+1);
+                xTot++;
+            } else {
+                xVelArray[i] = Double.NaN;
+            }
+            if (!Double.isNaN(yPos.get(i)) && !Double.isNaN(yPos.get(i+1))) {
+                yVelArray[i] = yPos.get(i) - yPos.get(i+1);
+                yTot++;
+            } else {
+                yVelArray[i] = Double.NaN;
+            }
+        }
+        double xVel = 0;
+        double yVel = 0;
+        if (xTot != 0) {
+            for (int i = 0; i < 4; i++) {
+                if (!Double.isNaN(xVelArray[i])) {
+                    xVel+=xVelArray[i];
+                }
+            }
+            xVel /= xTot;
+        } else {
+            willHit = false;
+            return;
+        }
+        if (yTot != 0) {
+            for (int i = 0; i < 4; i++) {
+                if (!Double.isNaN(yVelArray[i])) {
+                    yVel+=yVelArray[i];
+                }
+            }
+            yVel /= yTot;
+        } else {
+            willHit = false;
+            return;
+        }
+        Double time = -currentY/yVel - Constants.INDEXER_TO_SHOOTER_TRAVEL_TIME_TARS;
+        Double initialV = Math.pow(currentX + time*xVel,1.06)/(time*Math.cos(0 /*TODO get from limelight*/));
+        willHit = Math.abs((initialV * time * Math.sin(Constants.SHOOTER_RELEASE_ANGLE) - 9.81/2 * time*time) - Constants.DELTA_HEIGHT) < .3;
     }
 }
