@@ -89,8 +89,10 @@ public class RobotContainer {
         // new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
         // new Trigger(m_driveController::getRightBumper).onTrue(new
         // InstantCommand(m_IndexerSubsystem::shoot));
-        new Trigger(m_driveController::getYButton)
+        new Trigger(m_driveController::getAButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(5, 1.06)));
+        new Trigger(m_driveController::getYButton)
+                .onTrue(new InstantCommand(() -> m_IndexerSubsystem.shoot()));
         new Trigger(m_driveController::getXButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.stopMotor()));
         new Trigger(m_driveController::getAButton)
