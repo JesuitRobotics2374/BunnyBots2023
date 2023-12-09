@@ -46,7 +46,6 @@ public class IndexerSubsystem extends SubsystemBase {
         tab.addBoolean("internalPosition0", ()-> position[0]);
         tab.addBoolean("internalPosition1", ()-> position[1]);
         tab.addBoolean("internalPosition2", ()-> position[2]);
-        tab.addBoolean("shoot", ()-> getShoot());
 
         // indexerOneMotor.config_kP(0, Constants.SHOOTER_KP);
         // indexerOneMotor.config_kI(0, Constants.SHOOTER_KI);
@@ -67,8 +66,8 @@ public class IndexerSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // updateIndexer();
-        // recievedIntake();
+        updateIndexer();
+        recievedIntake();
     }
 
     public void shoot() {
@@ -93,7 +92,7 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void tryCyclingIndexerOne() {
-        if (debouncer1.calculate(sensor1.get())) {
+        if (debouncer1.calculate(!sensor1.get())) {
             indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         } else {
             position[1] = true;
@@ -113,31 +112,7 @@ public class IndexerSubsystem extends SubsystemBase {
         }
     }
 
-    //INDEXER TESTING CODE
-
-    public void cycleIndexers() {
-        indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-        indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-    }
-
-    public void stopCycleIndexers() {
-        indexerTwoMotor.stopMotor();
-        indexerOneMotor.stopMotor();
-    }
-
-    public void cycleOneMotor() {
-        indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-    }
-
-    public void stopCycleOneMotor() {
-        indexerOneMotor.stopMotor();
-    }
-
-    public boolean getShoot() {
-        return shoot;
-    }
-
-    //INTAKE CODE
+    //INAKE CODE
 
     public void spinIntake() {
         intakeMotor.set(.5);
@@ -148,4 +123,28 @@ public class IndexerSubsystem extends SubsystemBase {
         intakeMotor.stopMotor();
         indexerOneMotor.stopMotor();
     }
+
+    // //INDEXER TESTING CODE
+
+    // public void cycleIndexers() {
+    //     indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    //     indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    // }
+
+    // public void stopCycleIndexers() {
+    //     indexerTwoMotor.stopMotor();
+    //     indexerOneMotor.stopMotor();
+    // }
+
+    // public void cycleOneMotor() {
+    //     indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    // }
+
+    // public void stopCycleOneMotor() {
+    //     indexerOneMotor.stopMotor();
+    // }
+
+    // public boolean getShoot() {
+    //     return shoot;
+    // }
 }
