@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,9 +20,10 @@ public class IndexerSubsystem extends SubsystemBase {
     private DigitalInput sensor0 = new DigitalInput(0);
     private DigitalInput sensor1 = new DigitalInput(1);
     private DigitalInput sensor2 = new DigitalInput(2);
-    private Debouncer debouncer0 = new Debouncer(.1, DebounceType.kBoth);
+    private Debouncer debouncer0 = new Debouncer(.1, DebounceType.kRising);
     private Debouncer debouncer1 = new Debouncer(.1, DebounceType.kBoth);
     private Debouncer debouncer2 = new Debouncer(.1, DebounceType.kBoth);
+    private Debouncer debouncerFire = new Debouncer(.4, DebounceType.kFalling);
     private boolean[] position;
     private boolean shoot;
 
@@ -36,6 +37,8 @@ public class IndexerSubsystem extends SubsystemBase {
         indexerTwoMotor.getSelectedSensorVelocity();
         indexerOneMotor.setInverted(true);
         indexerTwoMotor.setInverted(true);
+        indexerTwoMotor.setNeutralMode(NeutralMode.Brake);
+        indexerOneMotor.setNeutralMode(NeutralMode.Brake);
 
         position = new boolean[3];
 
@@ -71,7 +74,10 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void shoot() {
-        shoot = true;
+        if (position[2]) {
+            shoot = true;
+            ShooterSubsystem.getInstance().fireFromConstants(5, 1.06);
+        }
     }
 
     public boolean readyToShoot() {
@@ -89,10 +95,15 @@ public class IndexerSubsystem extends SubsystemBase {
         if (!position[1] && position[0]) tryCyclingIndexerOne();
         if (!position[2] && position[1]) tryCyclingIndexerTwo();
         if (position[2] && shoot) tryCyclingIndexerTwo();
+        if (position[2] && sensor2.get() && !shoot) {
+            indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        } else if (position[2] && !shoot) {
+            indexerTwoMotor.stopMotor();
+        }
     }
 
     public void tryCyclingIndexerOne() {
-        if (debouncer1.calculate(!sensor1.get())) {
+        if (!debouncer1.calculate(!sensor1.get())) {
             indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         } else {
             position[1] = true;
@@ -102,8 +113,13 @@ public class IndexerSubsystem extends SubsystemBase {
     }
 
     public void tryCyclingIndexerTwo() {
-        if (shoot == debouncer2.calculate(!sensor2.get())) {
+        if ((shoot && debouncerFire.calculate(!sensor2.get())) || (!shoot && !debouncer2.calculate(!sensor2.get()))) {
             indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        } else if (shoot) {
+            position[2] = false;
+            shoot = false;
+            ShooterSubsystem.getInstance().stopMotor();
+            indexerTwoMotor.stopMotor();
         } else {
             position[2] = position[1];
             position[1] = false;
@@ -126,15 +142,15 @@ public class IndexerSubsystem extends SubsystemBase {
 
     // //INDEXER TESTING CODE
 
-    // public void cycleIndexers() {
-    //     indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-    //     indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
-    // }
+    public void cycleIndexers() {
+        indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    }
 
-    // public void stopCycleIndexers() {
-    //     indexerTwoMotor.stopMotor();
-    //     indexerOneMotor.stopMotor();
-    // }
+    public void stopCycleIndexers() {
+        indexerTwoMotor.stopMotor();
+        indexerOneMotor.stopMotor();
+    }
 
     // public void cycleOneMotor() {
     //     indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
