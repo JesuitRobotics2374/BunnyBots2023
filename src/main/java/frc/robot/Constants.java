@@ -59,5 +59,6 @@ public class Constants {
 
     // Intake subclass
     public static final int INTAKE_MOTOR_ONE = 7;
+    public static final int CASE_INDEXER_MOTOR = 0;
 
 }
