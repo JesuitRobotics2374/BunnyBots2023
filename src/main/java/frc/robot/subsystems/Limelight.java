@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -8,8 +8,6 @@ import frc.robot.Constants;
 
 
 public class Limelight {
-
-    private static Limelight m_Instance;
 
     private NetworkTable table;
 
@@ -21,10 +19,11 @@ public class Limelight {
     private NetworkTableEntry tl;
 
 
-    private NetworkTableEntry[] tas;
-    private NetworkTableEntry[] tys;
-
-    public enum LightMode {
+    private NetworkTableEntry[] tas; 
+    private NetworkTableEntry[] thors; 
+    private NetworkTableEntry[] tys; 
+	
+	public enum LightMode {
         DEFAULT(0), OFF(1), BLINK(2), ON(3);
 
         private final int ledMode;
@@ -88,7 +87,7 @@ public class Limelight {
     /**
      * Lime Light Driver Singleton
      */
-    public LimeLight() {
+    public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
 
         tx = table.getEntry("tx");
@@ -98,11 +97,10 @@ public class Limelight {
         ts = table.getEntry("ts");
         tl = table.getEntry("tl");
 
-        tas = {table.getEntry("ta0"), table.getEntry("ta1"), table.getEntry("ta2"), table.getEntry("ta3"), table.getEntry("ta4")};
-        thors = {table.getEntry("thor0"), table.getEntry("thor1"), table.getEntry("thor2"), table.getEntry("thor3"), table.getEntry("thor4")};
-        tys = {table.getEntry("ty0"), table.getEntry("ty1"), table.getEntry("ty2"), table.getEntry("ty3"), table.getEntry("ty4")};
-
-    }
+		tas = new NetworkTableEntry[]{table.getEntry("ta0"), table.getEntry("ta1"), table.getEntry("ta2"), table.getEntry("ta3"), table.getEntry("ta4")};
+    	thors = new NetworkTableEntry[]{table.getEntry("thor0"), table.getEntry("thor1"), table.getEntry("thor2"), table.getEntry("thor3"), table.getEntry("thor4")};
+		tys = new NetworkTableEntry[]{table.getEntry("ty0"), table.getEntry("ty1"), table.getEntry("ty2"), table.getEntry("ty3"), table.getEntry("ty4")};
+	}
 
     /**
      * ALWAYS USE HAS TARGET BEFORE CALLING
@@ -112,29 +110,28 @@ public class Limelight {
 
         int bigRectangleIndex = -1;
         double maxArea = Double.MIN_VALUE;
-        double curr;
+        double acurr;
+		int longRectangleIndex = -1;
+        double maxHor = Double.MIN_VALUE;
+		double hcurr;
+
 
         for (int i = 0; i < tas.length; i++) {
-            curr = tas[i].getDouble(Double.MIN_VALUE);
-            if (curr > maxArea) {
+            acurr = tas[i].getDouble(Double.MIN_VALUE);
+			hcurr = thors[i].getDouble(Double.MIN_VALUE);
+			System.out.println(i + " " + acurr + " " + hcurr);
+            if (acurr >= maxArea) {
                 bigRectangleIndex = i;
-                maxArea = curr;
+                maxArea = acurr;
             }
-        }
-
-        int longRectangleIndex = -1;
-        double maxHor = Double.MIN_VALUE;
-        double curr;
-        for (int i = 0; i < thors.length; i++) {
-            curr = thors[i].getDouble(Double.MIN_VALUE);
-            if (curr > maxHor) {
+            if (hcurr >= maxHor) {
                 bigRectangleIndex = i;
-                maxHor = curr;
+                maxHor = hcurr;
             }
         }
 
         if (longRectangleIndex != bigRectangleIndex) {
-            System.out.println("Limelight Reading Not Consistent.");
+            System.out.println(bigRectangleIndex + " " + maxArea + " Limelight Reading Not Consistent. " + longRectangleIndex + " " + maxHor);
             return false;
         }
 
@@ -243,20 +240,6 @@ public class Limelight {
         table.getEntry("pipeline").setNumber(pipeline);
     }
 
-
-    /**
-     * Get the Lime Light Subsystem instance
-     *
-     * @return The Lime Light instance
-     */
-    public static LimeLight getInstance() {
-        if (m_Instance == null) {
-            m_Instance = new LimeLight();
-        }
-
-        return m_Instance;
-    }
-
     /**
      * Get the distance of the limelight target
      *
@@ -279,7 +262,7 @@ public class Limelight {
      * Output diagnostics
      */
     public void outputTelemetry() {
-        SmartDashboard.putBoolean("HasTarget", hasValidTarget());
+        SmartDashboard.putBoolean("HasTarget", hasTarget());
         SmartDashboard.putNumber("Horizontal Offset", getXAngle());
         SmartDashboard.putNumber("Vertical Offset", getYAngle());
         SmartDashboard.putNumber("Area", getArea());
