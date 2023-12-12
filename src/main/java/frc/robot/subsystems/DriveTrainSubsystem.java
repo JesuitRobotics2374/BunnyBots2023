@@ -44,8 +44,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
         tab.addNumber("Angle", this::getCurrentAngle);
     }
 
-    public void drive(double left, double right) {
-        diffDrive.tankDrive(left, right);
+    public void drive(double forward, double turn) {
+        diffDrive.arcadeDrive(forward, turn);
     }
 
     public static DriveTrainSubsystem getInstance() {

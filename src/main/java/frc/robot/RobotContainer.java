@@ -47,7 +47,7 @@ public class RobotContainer {
      */
     public void resetDrive() {
         m_DriveTrainSubsystem.setDefaultCommand(
-                new DefaultDriveCommand(this::getLeftY, this::getRightY, m_DriveTrainSubsystem));
+                new DefaultDriveCommand(this::getLeftY, this::getLeftX, m_DriveTrainSubsystem));
     }
 
     /**
@@ -175,15 +175,8 @@ public class RobotContainer {
      * @return The adjusted Right Y axis of the main controller
      */
 
-    public double getRightY() {
-        if (driveMode == -1) {
-            return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND))) * .5;
-        } else if (driveMode == 1) {
-            return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
-        } else {
-            return Constants.SPEED_MULTIPLIER
-                    * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
-        }
+    public double getLeftX() {
+        return rightLimiter.calculate(deadband(m_driveController.getLeftX(), Constants.DEADBAND)) * .5;
     }
 
     /**

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -61,10 +62,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        // TODO Auto-generated method stub
-        super.autonomousPeriodic();
-
-        m_robotContainer.getDrivetrain().drive(0.7, 0.7);
+        if (Timer.getMatchTime() > 12)
+            m_robotContainer.getDrivetrain().drive(0.7, 0);
     }
 
     @Override
