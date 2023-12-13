@@ -47,7 +47,7 @@ public class RobotContainer {
      */
     public void resetDrive() {
         m_DriveTrainSubsystem.setDefaultCommand(
-                new DefaultDriveCommand(this::getLeftY, this::getLeftX, m_DriveTrainSubsystem));
+                new DefaultDriveCommand(this::getLeftY, this::getRightY, m_DriveTrainSubsystem));
     }
 
     /**
@@ -82,8 +82,8 @@ public class RobotContainer {
      */
     public void configureButtonBindings() {
         // new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
-        // new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
-        // new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
+        new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
+        new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
         // new Trigger(m_driveController::getBButton).onTrue(new
         // InstantCommand(m_DriveTrainSubsystem::printSensor));
         // new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
@@ -131,7 +131,7 @@ public class RobotContainer {
      * @return The copy sign square
      */
     public static double square(double value) {
-        return Math.copySign(value * value, value);
+        return Math.copySign(value, value);
     }
 
     /**
@@ -175,10 +175,22 @@ public class RobotContainer {
      * @return The adjusted Right Y axis of the main controller
      */
 
+     public double getRightY() {
+        if (driveMode == -1) {
+            return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND))) * .5;
+        } else if (driveMode == 1) {
+            return square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
+        } else {
+            return Constants.SPEED_MULTIPLIER
+                    * square(rightLimiter.calculate(deadband(m_driveController.getRightY(), Constants.DEADBAND)));
+        }
+    }
+/* 
     public double getLeftX() {
         return rightLimiter.calculate(deadband(m_driveController.getLeftX(), Constants.DEADBAND)) * .5;
     }
 
+    */
     /**
      * Accessor to the Autonomous Chooser
      * 

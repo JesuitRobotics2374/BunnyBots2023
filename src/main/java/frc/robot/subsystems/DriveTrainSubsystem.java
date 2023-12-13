@@ -30,6 +30,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
         if (instance == null) {
             instance = this;
         }
+       // frontLeft.configFactoryDefault();
+       // frontRight.configFactoryDefault();
+       // backLeft.configFactoryDefault();
+       // backRight.configFactoryDefault();
         leftGroup = new MotorControllerGroup(backLeft, frontLeft);
         leftGroup.setInverted(true);
         rightGroup = new MotorControllerGroup(backRight, frontRight);
@@ -44,8 +48,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
         tab.addNumber("Angle", this::getCurrentAngle);
     }
 
-    public void drive(double forward, double turn) {
-        diffDrive.arcadeDrive(forward, turn);
+    public void drive(double left, double right) {
+        diffDrive.tankDrive(left, right);
     }
 
     public static DriveTrainSubsystem getInstance() {

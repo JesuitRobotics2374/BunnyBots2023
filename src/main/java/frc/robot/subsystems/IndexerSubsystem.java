@@ -17,7 +17,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
     private WPI_TalonFX indexerOneMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_ONE);
     private WPI_TalonFX indexerTwoMotor = new WPI_TalonFX(Constants.INDEXER_MOTOR_TWO);
-    private DigitalInput sensor0 = new DigitalInput(0);
+    private DigitalInput sensor0 = new DigitalInput(5);
     private DigitalInput sensor1 = new DigitalInput(1);
     private DigitalInput sensor2 = new DigitalInput(2);
     private Debouncer debouncer0 = new Debouncer(.1, DebounceType.kRising);
@@ -49,6 +49,7 @@ public class IndexerSubsystem extends SubsystemBase {
         tab.addBoolean("internalPosition0", ()-> position[0]);
         tab.addBoolean("internalPosition1", ()-> position[1]);
         tab.addBoolean("internalPosition2", ()-> position[2]);
+        tab.addBoolean("shoot", () -> getShoot());
 
         // indexerOneMotor.config_kP(0, Constants.SHOOTER_KP);
         // indexerOneMotor.config_kI(0, Constants.SHOOTER_KI);
@@ -77,6 +78,12 @@ public class IndexerSubsystem extends SubsystemBase {
         if (position[2]) {
             shoot = true;
             ShooterSubsystem.getInstance().fireFromConstants(5, 1.06);
+        }
+    }
+
+    public void shootNoFire() {
+        if (position[2]) {
+            shoot = true;
         }
     }
 
@@ -160,7 +167,7 @@ public class IndexerSubsystem extends SubsystemBase {
     //     indexerOneMotor.stopMotor();
     // }
 
-    // public boolean getShoot() {
-    //     return shoot;
-    // }
+    public boolean getShoot() {
+        return shoot;
+    }
 }

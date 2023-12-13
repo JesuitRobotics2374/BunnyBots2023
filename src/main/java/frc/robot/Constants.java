@@ -40,7 +40,7 @@ public class Constants {
     public static final double SHOOTER_KI = .00025;
     public static final double SHOOTER_KD = .0;
 
-    public static final double DELTA_HEIGHT = 0;
+    public static final double DELTA_HEIGHT = 0.7;
     public static final double MOTOR_VELOCITY_CONVERSION = 2048 / (Math.PI * 2 * 0.0508 * 10);
 
     public static final double[] weightValues = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; //TODO

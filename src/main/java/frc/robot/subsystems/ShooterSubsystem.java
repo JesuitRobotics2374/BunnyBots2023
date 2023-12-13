@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.util.Limelight;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -21,9 +22,14 @@ public class ShooterSubsystem extends SubsystemBase {
     public LinkedList<Double> yPos = new LinkedList<>(); // PRELOAD WITH NaN
     public boolean willHit = false;
     public static ShooterSubsystem instance;
+    public Limelight limelight = new Limelight();
 
     public ShooterSubsystem() {
         // shooterRightMotor.setInverted(true);
+        for (int i = 0; i < 5; i++) {
+            xPos.add(Double.NaN);
+            yPos.add(Double.NaN);
+        }
         instance = this;
         shooterLeftMotor.configFactoryDefault();
         shooterLeftMotor.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_1Ms);
@@ -43,13 +49,13 @@ public class ShooterSubsystem extends SubsystemBase {
         // shooterRightMotor.follow(shooterLeftMotor);
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
         tab.addDouble("Speed", () -> getShooterVelocity());
-        
-
+        tab.addDouble("X", () -> getX());
+        tab.addDouble("Y", () -> getY());
     }
 
     @Override
     public void periodic() {
-        // updateFireTruths();
+        updateFireTruths();
     }
 
     public void shootFromLimeLight() {
@@ -94,9 +100,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /// AUTOMATIC TARGETING ///
 
+    public double getX() {
+        return limelight.getX();
+    }
+
+    public double getY() {
+        return limelight.getY();
+    }
+
     public void updateFireTruths() {
-        double currentX = 0; //TODO get from limeligh
-        double currentY = 0; //TODO get from limelight
+        double currentX = limelight.getX(); //TODO get from limelight
+        double currentY = limelight.getY(); //TODO get from limelight
         xPos.addFirst(currentX);
         yPos.addFirst(currentY);
         xPos.removeLast();
@@ -144,8 +158,12 @@ public class ShooterSubsystem extends SubsystemBase {
             return;
         }
         Double time = -currentY/yVel - Constants.INDEXER_TO_SHOOTER_TRAVEL_TIME_TARS;
-        Double initialV = Math.pow(currentX + time*xVel,1.06)/(time*Math.cos(0 /*TODO get from limelight*/));
+        Double initialV = Math.pow(currentX + time*xVel,1.06)/(time*Math.cos(Constants.SHOOTER_RELEASE_ANGLE));
         willHit = Math.abs((initialV * time * Math.sin(Constants.SHOOTER_RELEASE_ANGLE) - 9.81/2 * time*time) - Constants.DELTA_HEIGHT) < .3;
+        if (willHit) {
+            IndexerSubsystem.getInstance().shootNoFire();
+            shooterLeftMotor.set(ControlMode.Velocity, initialV * Constants.MOTOR_VELOCITY_CONVERSION);
+        }
     }
 
     public static ShooterSubsystem getInstance() {

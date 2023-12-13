@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,20 +14,21 @@ public class CASEIndexerSubsystem extends SubsystemBase {
     private DigitalInput sensor = new DigitalInput(0);
     public static CASEIndexerSubsystem instance; 
     public boolean shoot = false;
+    private static Debouncer debouncer = new Debouncer(.1, DebounceType.kFalling);
 
     public CASEIndexerSubsystem(){
         instance = this;
     }
 
     @Override
-    public void periodic() { //TODO make truth table to see if optimization possible
-        if(sensor.get() || shoot){
+    public void periodic() {
+        if(debouncer.calculate(sensor.get()) || shoot){
             motor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         } else {
             motor.stopMotor();
         }
         
-        if (sensor.get() && shoot){
+        if (debouncer.calculate(sensor.get()) && shoot){
             shoot = false;
         }
     }
