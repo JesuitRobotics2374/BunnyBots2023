@@ -77,7 +77,7 @@ public class IndexerSubsystem extends SubsystemBase {
     public void shoot() {
         if (position[2]) {
             shoot = true;
-            ShooterSubsystem.getInstance().fireFromConstants(5, 1.06);
+            ShooterSubsystem.getInstance().fireFromConstants(7, 1.06);
         }
     }
 
@@ -152,11 +152,16 @@ public class IndexerSubsystem extends SubsystemBase {
     public void cycleIndexers() {
         indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        flushIndexer();
     }
 
     public void stopCycleIndexers() {
         indexerTwoMotor.stopMotor();
         indexerOneMotor.stopMotor();
+    }
+
+    public void flushIndexer() {
+        position = new boolean[3];
     }
 
     // public void cycleOneMotor() {

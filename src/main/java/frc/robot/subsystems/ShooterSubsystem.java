@@ -55,7 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updateFireTruths();
+        // updateFireTruths();
     }
 
     public void shootFromLimeLight() {
