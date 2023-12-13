@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.DodgeLeftCommand;
-import frc.robot.commands.DriveForwardCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -22,8 +20,7 @@ public class RobotContainer {
     ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
     private final XboxController m_driveController = new XboxController(Constants.CONTROLLER_USB_PORT_DRIVER);
-    // private final XboxController m_operatorController = new
-    // XboxController(Constants.CONTROLLER_USB_PORT_OPERATOR);
+    private final XboxController m_operatorController = new XboxController(Constants.CONTROLLER_USB_PORT_OPERATOR);
 
     private SlewRateLimiter leftLimiter = new SlewRateLimiter(5);
     private SlewRateLimiter rightLimiter = new SlewRateLimiter(5);
@@ -73,40 +70,32 @@ public class RobotContainer {
      */
     public void configureShuffleBoard() {
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
-        tab.addBoolean("Skrt skrt", this::getSlowMode);
-        tab.addBoolean("Vroom vroom", this::getTurboMode);
+        tab.addBoolean("Slow Mode", this::getSlowMode);
+        tab.addBoolean("Turbo Mode", this::getTurboMode);
     }
 
     /**
      * Setup all of the button controls for the robot
      */
     public void configureButtonBindings() {
-        // new Trigger(m_driveController::getAButton).onTrue(new DodgeLeftCommand(m_DriveTrainSubsystem));
         new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
-        // new Trigger(m_driveController::getBButton).onTrue(new
-        // InstantCommand(m_DriveTrainSubsystem::printSensor));
-        // new Trigger(m_driveController::getBButton).onTrue(new DriveForwardCommand(m_DriveTrainSubsystem));
-        // new Trigger(m_driveController::getRightBumper).onTrue(new
-        // InstantCommand(m_IndexerSubsystem::shoot));
-        new Trigger(m_driveController::getAButton)
+        new Trigger(m_operatorController::getAButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(5, 1.06)));
-        new Trigger(m_driveController::getYButton)
+        new Trigger(m_operatorController::getYButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.shoot()));
-        new Trigger(m_driveController::getXButton)
+        new Trigger(m_operatorController::getXButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.stopMotor()));
-        new Trigger(m_driveController::getAButton)
+        new Trigger(m_operatorController::getAButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.cycleIndexers()));
-        new Trigger(m_driveController::getAButton)
+        new Trigger(m_operatorController::getAButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopCycleIndexers()));
-        new Trigger(m_driveController::getBButton)
+        new Trigger(m_operatorController::getBButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.spinIntake()));
-        new Trigger(m_driveController::getBButton)
+        new Trigger(m_operatorController::getBButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopIntake()));
-        // new Trigger(m_driveController::getLeftBumper).onTrue(new
-        // InstantCommand(m_IntakeSubsystem::spin));
-        // new Trigger(m_driveController::getLeftBumper).onFalse(new
-        // InstantCommand(m_IntakeSubsystem::stop));
+        new Trigger(m_operatorController::getLeftBumper)
+                .onFalse(new InstantCommand(() -> m_IndexerSubsystem.flushIndexer()));
     }
 
     /**
