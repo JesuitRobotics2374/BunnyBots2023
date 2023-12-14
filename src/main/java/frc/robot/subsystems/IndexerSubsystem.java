@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.sound.midi.MidiChannel;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -22,10 +24,11 @@ public class IndexerSubsystem extends SubsystemBase {
     private DigitalInput sensor2 = new DigitalInput(2);
     private Debouncer debouncer0 = new Debouncer(.1, DebounceType.kRising);
     private Debouncer debouncer1 = new Debouncer(.1, DebounceType.kBoth);
-    private Debouncer debouncer2 = new Debouncer(.1, DebounceType.kBoth);
+    private Debouncer debouncer2 = new Debouncer(.2, DebounceType.kFalling);
     private Debouncer debouncerFire = new Debouncer(.4, DebounceType.kFalling);
     private boolean[] position;
     private boolean shoot;
+    private boolean manualIndexer = false;
 
     public final CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ONE, MotorType.kBrushless);
     public static IndexerSubsystem instance;
@@ -72,12 +75,20 @@ public class IndexerSubsystem extends SubsystemBase {
     public void periodic() {
         updateIndexer();
         recievedIntake();
+        if (manualIndexer) {
+            updateIndexerNum(1);
+            updateIndexerNum(2);
+        }
+    }
+
+    public void updateIndexerNum(int num) {
+        if (num == 1) indexerOneMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+        if (num == 2) indexerTwoMotor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
     }
 
     public void shoot() {
         if (position[2]) {
             shoot = true;
-            ShooterSubsystem.getInstance().fireFromConstants(7, 1.06);
         }
     }
 
@@ -174,5 +185,15 @@ public class IndexerSubsystem extends SubsystemBase {
 
     public boolean getShoot() {
         return shoot;
+    }
+
+    //BS stuff
+
+    public void manualIndexerTrue() {
+        manualIndexer = true;
+    }
+
+    public void manualIndexerFalse() {
+        manualIndexer = false;
     }
 }

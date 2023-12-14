@@ -2,14 +2,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.commands.AutoDriveCommand;
 
 public class Robot extends TimedRobot {
     private final RobotContainer m_robotContainer = new RobotContainer();
 
-    private Command m_autonomousCommand;
+    private Command m_autonomousCommand = new AutoDriveCommand(m_robotContainer.m_DriveTrainSubsystem).withTimeout(4);
 
     // @SuppressWarnings("unused")
     // private final CharacterizeDrivetrainCommand characterizeCommand = new
@@ -18,7 +20,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-
+        ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
+        tab.addDouble("time", () -> Timer.getMatchTime());
     }
 
     @Override
@@ -60,17 +63,14 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
-        
     }
 
     @Override
     public void autonomousPeriodic() {
-        if (Timer.getMatchTime() > 12)
-            m_robotContainer.getDrivetrain().drive(0.7, 0);
+        
     }
 
     @Override
     public void autonomousExit() {
-
     }
 }

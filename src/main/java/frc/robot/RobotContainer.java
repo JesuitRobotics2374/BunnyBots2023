@@ -47,6 +47,10 @@ public class RobotContainer {
                 new DefaultDriveCommand(this::getLeftY, this::getRightY, m_DriveTrainSubsystem));
     }
 
+    public void clearDrive() {
+        m_DriveTrainSubsystem.removeDefaultCommand();
+    }
+
     /**
      * Get the main controller
      * 
@@ -80,22 +84,30 @@ public class RobotContainer {
     public void configureButtonBindings() {
         new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
-        new Trigger(m_operatorController::getAButton)
-                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(5, 1.06)));
+        
+
         new Trigger(m_operatorController::getYButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.shoot()));
         new Trigger(m_operatorController::getXButton)
                 .onTrue(new InstantCommand(() -> m_ShooterSubsystem.stopMotor()));
+        
         new Trigger(m_operatorController::getAButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.cycleIndexers()));
         new Trigger(m_operatorController::getAButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopCycleIndexers()));
-        new Trigger(m_operatorController::getBButton)
+        
+                new Trigger(m_operatorController::getBButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.spinIntake()));
         new Trigger(m_operatorController::getBButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopIntake()));
+        new Trigger(m_operatorController::getRightBumper)
+            .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(7, 1.06)));
         new Trigger(m_operatorController::getLeftBumper)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.flushIndexer()));
+        // // new Trigger(m_operatorController::getRightBumper)
+        // //         .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(7, 1.06)));
+        // // new Trigger(m_operatorController::getRightBumper)
+        // //         .onFalse(new InstantCommand(() -> m_IndexerSubsystem.fireFromConstants()));
     }
 
     /**
