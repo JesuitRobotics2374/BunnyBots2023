@@ -101,9 +101,11 @@ public class RobotContainer {
         new Trigger(m_operatorController::getBButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopIntake()));
         new Trigger(m_operatorController::getRightBumper)
-            .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(7, 1.06)));
+            .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(ShooterSubsystem.getInstance().fireDistance, 1.06)));
         new Trigger(m_operatorController::getLeftBumper)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.flushIndexer()));
+        new Trigger(m_operatorController::getBackButton).onTrue(new InstantCommand(() -> ShooterSubsystem.getInstance().decreaseDistance()));
+        new Trigger(m_operatorController::getStartButton).onTrue(new InstantCommand(() -> ShooterSubsystem.getInstance().increaseDistance()));
         // // new Trigger(m_operatorController::getRightBumper)
         // //         .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(7, 1.06)));
         // // new Trigger(m_operatorController::getRightBumper)

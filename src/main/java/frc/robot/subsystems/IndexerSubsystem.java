@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import javax.sound.midi.MidiChannel;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -89,6 +87,7 @@ public class IndexerSubsystem extends SubsystemBase {
     public void shoot() {
         if (position[2]) {
             shoot = true;
+            ShooterSubsystem.getInstance().fireFromConstants(ShooterSubsystem.getInstance().fireDistance, 1.06);
         }
     }
 

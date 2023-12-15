@@ -21,6 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean willHit = false;
     public static ShooterSubsystem instance;
     // public Limelight limelight = new Limelight();
+    public double fireDistance = 11.5;
 
     public ShooterSubsystem() {
         // shooterRightMotor.setInverted(true);
@@ -47,6 +48,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // shooterRightMotor.follow(shooterLeftMotor);
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
         tab.addDouble("Speed", () -> getShooterVelocity());
+        tab.addDouble("Fire modifier", () -> fireDistance);
         // tab.addDouble("X", () -> getX());
         // tab.addDouble("Y", () -> getY());
     }
@@ -54,6 +56,14 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // updateFireTruths();
+    }
+
+    public void increaseDistance() {
+        fireDistance += .5;
+    }
+
+    public void decreaseDistance() {
+        fireDistance -= .5;
     }
 
     public void shootFromLimeLight() {
