@@ -82,7 +82,7 @@ public class RobotContainer {
         new Trigger(m_driveController::getLeftBumper).onTrue(new InstantCommand(this::toggleSlowMode));
         new Trigger(m_driveController::getRightBumper).onTrue(new InstantCommand(this::toggleTurboMode));
         new Trigger(m_operatorController::getAButton)
-                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(5, 1.06)));
+                .onTrue(new InstantCommand(() -> m_ShooterSubsystem.fireFromConstants(ShooterSubsystem.getInstance().fireDistance, 1.06)));
         new Trigger(m_operatorController::getYButton)
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.shoot()));
         new Trigger(m_operatorController::getXButton)
@@ -91,6 +91,12 @@ public class RobotContainer {
                 .onTrue(new InstantCommand(() -> m_IndexerSubsystem.cycleIndexers()));
         new Trigger(m_operatorController::getAButton)
                 .onFalse(new InstantCommand(() -> m_IndexerSubsystem.stopCycleIndexers()));
+        new Trigger(m_operatorController::getBButton)
+                .onTrue(new InstantCommand(() -> m_IndexerSubsystem.cycle()));
+        new Trigger(m_operatorController::getBButton)
+                .onFalse(new InstantCommand(() -> m_IndexerSubsystem.noCycle()));
+        new Trigger(m_operatorController::getLeftBumper).onTrue(new InstantCommand(() -> m_ShooterSubsystem.decreaseShooter()));
+        new Trigger(m_operatorController::getRightBumper).onTrue(new InstantCommand(() -> m_ShooterSubsystem.increaseShooter()));
     }
 
     /**

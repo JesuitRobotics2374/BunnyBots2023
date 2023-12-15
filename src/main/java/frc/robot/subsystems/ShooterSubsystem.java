@@ -21,6 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public LinkedList<Double> yPos = new LinkedList<>(); // PRELOAD WITH NaN
     public boolean willHit = false;
     public static ShooterSubsystem instance;
+    public double fireDistance = 11;
     // public Limelight limelight = new Limelight();
 
     public ShooterSubsystem() {
@@ -48,6 +49,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // shooterRightMotor.follow(shooterLeftMotor);
         ShuffleboardTab tab = Shuffleboard.getTab(Constants.DRIVER_READOUT_TAB_NAME);
+        tab.addDouble("Shooter Modifier", () -> fireDistance);
         // tab.addDouble("Speed", () -> getShooterVelocity());
         // tab.addDouble("X", () -> getX());
         // tab.addDouble("Y", () -> getY());
@@ -95,6 +97,14 @@ public class ShooterSubsystem extends SubsystemBase {
         System.out.println(getShooterVelocity());
         System.out.println(shooterLeftMotor.getClosedLoopTarget());
         shooterLeftMotor.stopMotor();
+    }
+
+    public void increaseShooter() {
+        fireDistance += .5;
+    }
+
+    public void decreaseShooter() {
+        fireDistance -= .5;
     }
 
 

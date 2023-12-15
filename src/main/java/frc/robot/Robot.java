@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoCommand;
 
 public class Robot extends TimedRobot {
     private final RobotContainer m_robotContainer = new RobotContainer();
 
-    private Command m_autonomousCommand;
+    private Command m_autonomousCommand = new AutoCommand(m_robotContainer.m_DriveTrainSubsystem).withTimeout(4);
 
     // @SuppressWarnings("unused")
     // private final CharacterizeDrivetrainCommand characterizeCommand = new
