@@ -23,7 +23,7 @@ public class CASEIndexerSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if(debouncer.calculate(sensor.get()) || shoot){
-            motor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+            // motor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
         } else {
             motor.stopMotor();
         }
@@ -35,5 +35,13 @@ public class CASEIndexerSubsystem extends SubsystemBase {
 
     public void shoot() {
         shoot = true;
+    }
+
+    public void cycleIndexers() {
+        motor.set(Constants.INDEXER_MOTOR_SPIN_SPEED);
+    }
+
+    public void stopCycleIndexers() {
+        motor.stopMotor();
     }
 }
